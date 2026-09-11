@@ -244,34 +244,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 8. WHY RUSAT SPLIT LIST INTERACTION
+  // 8. WHY RUSAT STRENGTHS LIST + VISUAL CARD INTERACTION
   // --------------------------------------------------------------------------
-  const whyRows = document.querySelectorAll(".why-custom-row");
+  const whyRows = Array.from(document.querySelectorAll(".why-custom-row"));
+  const whyVisualCard = document.getElementById("why-visual-card");
+  const whyPagePrev = document.querySelector(".why-page-prev");
+  const whyPageNext = document.querySelector(".why-page-next");
+
   if (whyRows.length > 0) {
-    const setActiveRow = (targetRow) => {
-      whyRows.forEach((row) => {
-        const isTarget = row === targetRow;
-        row.classList.toggle("is-active", isTarget);
-        const tag = row.querySelector(".tag-label");
-        if (tag) {
-          tag.textContent = isTarget ? "CUSTOM NOW" : "CUSTOM";
-        }
-      });
+    let whyActiveIndex = whyRows.findIndex((row) => row.classList.contains("is-active"));
+    if (whyActiveIndex === -1) whyActiveIndex = 0;
+
+    const setActiveRow = (index) => {
+      whyActiveIndex = (index + whyRows.length) % whyRows.length;
+      const targetRow = whyRows[whyActiveIndex];
+
+      whyRows.forEach((row) => row.classList.toggle("is-active", row === targetRow));
+
+      const img = targetRow.getAttribute("data-img");
+      if (whyVisualCard && img) {
+        whyVisualCard.style.backgroundImage = `url('${img}')`;
+      }
+      if (whyPageNext) whyPageNext.classList.toggle("is-active", whyActiveIndex < whyRows.length - 1);
+      if (whyPagePrev) whyPagePrev.classList.toggle("is-active", whyActiveIndex > 0);
     };
 
-    whyRows.forEach((row) => {
-      row.addEventListener("mouseenter", () => setActiveRow(row));
-      row.addEventListener("click", (e) => {
-        setActiveRow(row);
-        // If clicking on the tag or action, trigger quote modal
-        if (
-          e.target.closest(".why-row-tag") ||
-          e.target.closest(".why-row-preview")
-        ) {
-          openQuoteModal();
-        }
-      });
+    whyRows.forEach((row, index) => {
+      row.addEventListener("mouseenter", () => setActiveRow(index));
+      row.addEventListener("click", () => setActiveRow(index));
     });
+
+    if (whyPagePrev) whyPagePrev.addEventListener("click", () => setActiveRow(whyActiveIndex - 1));
+    if (whyPageNext) whyPageNext.addEventListener("click", () => setActiveRow(whyActiveIndex + 1));
   }
 
   // --------------------------------------------------------------------------

@@ -1040,130 +1040,1022 @@
       </div>
     </section>
 
-    <!-- 6. CUSTOM TIMBER ENGINEERING & PROCESS -->
-    <section class="section custom-packaging-section" id="custom-packaging">
+    <!-- 6. CUSTOM PACKAGING CONFIGURATOR SECTION -->
+    <section class="section custom-packaging-section" id="custom-packaging" aria-label="Custom Packaging Configurator">
       <div class="container-editorial">
-        <!-- Top Section: Two-Column Editorial Layout (approx 40% / 60%) -->
-        <div class="custom-editorial-grid reveal-on-scroll">
-          
-          <!-- Left Column: Editorial Content (approx 40%) -->
-          <div class="custom-content-col">
-            <span class="section-tag custom-eyebrow">CUSTOM TIMBER ENGINEERING</span>
-            
-            <h2 class="custom-headline">
-              ENGINEERED<br>
-              FOR STRENGTH.<br>
-              BUILT FOR<br>
-              PRECISION.
+        
+        <!-- Section Introduction -->
+        <div class="configurator-intro-block reveal-on-scroll">
+          <div class="configurator-intro-header">
+            <span class="section-tag configurator-eyebrow">CUSTOM PACKAGING</span>
+            <h2 class="configurator-headline">
+              BUILT AROUND<br>
+              WHAT YOU NEED<br>
+              TO PROTECT.
             </h2>
-            
-            <div class="custom-brand-statement">
-              &ldquo;Made to specification &mdash; not simply made to size.&rdquo;
-            </div>
-            
-            <p class="custom-lead-copy">
-              From heavy machinery and industrial equipment to electrical components, engineering products and export consignments, Rusat Timber Depot delivers custom-built wooden boxes and crates designed around the product they need to protect.
+          </div>
+          <div class="configurator-intro-desc">
+            <p class="configurator-lead-text">
+              Tell us about your product and packaging requirements. Our team can use these details to understand the application and recommend an appropriate wooden packaging solution.
             </p>
-            
-            <div class="custom-cta-wrapper">
-              <button type="button" class="custom-editorial-link open-quote-btn" aria-label="Discuss your packaging requirements">
-                <span class="cta-link-text">DISCUSS YOUR PACKAGING REQUIREMENTS</span>
-                <span class="cta-link-arrow" aria-hidden="true">&rarr;</span>
-              </button>
+            <div class="configurator-intro-badges">
+              <span class="intro-spec-badge">
+                <span class="spec-dot"></span>
+                VISUAL ENGINEERING BRIEF
+              </span>
+              <span class="intro-spec-badge">
+                <span class="spec-dot"></span>
+                LIVE SPECIFICATION GENERATION
+              </span>
             </div>
           </div>
-
-          <!-- Right Column: Visual Showcase (approx 60%) -->
-          <div class="custom-visual-col">
-            <div class="custom-visual-frame">
-              <img src="assets/images/custom-packaging.jpg" alt="Custom Timber Packaging Engineering" class="custom-large-img" loading="lazy">
-              <div class="custom-visual-badge">
-                <span class="custom-badge-dot"></span>
-                <span class="custom-badge-text">HEAVY INDUSTRIAL SPECIFICATION</span>
-              </div>
-            </div>
-          </div>
-
         </div>
 
-        <!-- Editorial Process Section (Below Main Top Composition) -->
-        <div class="custom-process-section reveal-on-scroll">
-          <div class="custom-process-header">
-            <div class="process-header-left">
-              <span class="process-section-tag">ENGINEERING WORKFLOW</span>
-              <h3 class="custom-process-title">FROM PRODUCT TO PACKAGING</h3>
-            </div>
-            <p class="custom-process-subtitle">
-              Every packaging solution begins with understanding the product, its requirements and the conditions it needs to withstand.
-            </p>
-          </div>
-
-          <!-- Connected Horizontal Process Timeline (Desktop) / Vertical Timeline (Mobile) -->
-          <div class="custom-process-timeline">
-            <div class="process-timeline-track">
+        <!-- Main Configurator Interface (2-Column Grid: Form + Sticky Brief) -->
+        <div class="configurator-main-grid" id="packaging-configurator-root">
+          
+          <!-- Left Column: Configurator Steps & Form Engine -->
+          <div class="configurator-form-col">
+            
+            <!-- Mobile Brief Trigger Bar (Collapsible on Mobile) -->
+            <div class="mobile-brief-toggle-wrap">
+              <button type="button" class="mobile-brief-toggle-btn" id="mobile-brief-toggle" aria-expanded="false" aria-controls="mobile-brief-content">
+                <div class="mobile-toggle-left">
+                  <span class="mobile-toggle-icon">📋</span>
+                  <span class="mobile-toggle-title">VIEW YOUR PACKAGING BRIEF</span>
+                </div>
+                <div class="mobile-toggle-right">
+                  <span class="mobile-brief-preview-tag" id="mobile-brief-badge">Configuring</span>
+                  <span class="mobile-toggle-arrow">▼</span>
+                </div>
+              </button>
               
-              <!-- Step 01 -->
-              <div class="timeline-step-item">
-                <div class="step-node-header">
-                  <span class="step-index-num">01</span>
-                  <div class="step-node-dot"></div>
-                </div>
-                <div class="step-details-body">
-                  <h4 class="step-title">YOUR PRODUCT</h4>
-                  <p class="step-desc">Dimensions, weight &amp; centre of gravity</p>
+              <!-- Collapsible Mobile Brief View -->
+              <div class="mobile-brief-drawer" id="mobile-brief-content" style="display: none;">
+                <div class="mobile-brief-inner" id="mobile-brief-target">
+                  <!-- Dynamically synced with summary -->
                 </div>
               </div>
+            </div>
 
-              <!-- Step 02 -->
-              <div class="timeline-step-item">
-                <div class="step-node-header">
-                  <span class="step-index-num">02</span>
-                  <div class="step-node-dot"></div>
+            <!-- Progress Tracker Bar -->
+            <div class="configurator-progress-header" aria-label="Configuration progress">
+              <div class="progress-meta-row">
+                <span class="progress-step-counter" id="config-step-counter">STEP 01 OF 06</span>
+                <span class="progress-step-title" id="config-step-name">YOUR PRODUCT</span>
+              </div>
+              <div class="progress-stepper-track" role="tablist" aria-label="Configurator Steps">
+                <button type="button" class="step-track-node is-active" data-step="1" role="tab" aria-selected="true" aria-label="Step 1: Your Product">
+                  <span class="node-num">01</span>
+                  <span class="node-label">PRODUCT</span>
+                </button>
+                <div class="track-connector"></div>
+                <button type="button" class="step-track-node" data-step="2" role="tab" aria-selected="false" aria-label="Step 2: Packaging Type">
+                  <span class="node-num">02</span>
+                  <span class="node-label">PACKAGING</span>
+                </button>
+                <div class="track-connector"></div>
+                <button type="button" class="step-track-node" data-step="3" role="tab" aria-selected="false" aria-label="Step 3: Dimensions & Load">
+                  <span class="node-num">03</span>
+                  <span class="node-label">LOAD &amp; SIZE</span>
+                </button>
+                <div class="track-connector"></div>
+                <button type="button" class="step-track-node" data-step="4" role="tab" aria-selected="false" aria-label="Step 4: Handling & Transport">
+                  <span class="node-num">04</span>
+                  <span class="node-label">TRANSIT</span>
+                </button>
+                <div class="track-connector"></div>
+                <button type="button" class="step-track-node" data-step="5" role="tab" aria-selected="false" aria-label="Step 5: Requirements">
+                  <span class="node-num">05</span>
+                  <span class="node-label">REQUIREMENTS</span>
+                </button>
+                <div class="track-connector"></div>
+                <button type="button" class="step-track-node" data-step="6" role="tab" aria-selected="false" aria-label="Step 6: Contact Details">
+                  <span class="node-num">06</span>
+                  <span class="node-label">CONTACT</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Steps Container -->
+            <div class="configurator-card-shell">
+              <form id="custom-configurator-form" novalidate>
+                
+                <!-- ============================================================
+                     STEP 01: YOUR PRODUCT
+                     ============================================================ -->
+                <div class="config-step-pane is-visible" data-pane="1" role="tabpanel" aria-labelledby="step-1-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">01 / PRODUCT CATEGORY</span>
+                    <h3 class="step-pane-heading" id="step-1-heading">WHAT ARE YOU PACKAGING?</h3>
+                    <p class="step-pane-sub">Select the industrial category that best matches your product or payload.</p>
+                  </div>
+
+                  <div class="tiles-grid-selection" role="radiogroup" aria-label="Product Category">
+                    
+                    <!-- Tile 1: Machinery -->
+                    <label class="config-tile-card" for="prod-machinery">
+                      <input type="radio" name="product_category" id="prod-machinery" value="Machinery" class="tile-real-input" checked>
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-A</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M6 12h.01M18 12h.01"></path>
+                            <path d="M12 2v4m0 12v4"></path>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">MACHINERY</span>
+                          <span class="tile-desc">Industrial machinery, assemblies and manufacturing equipment</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Tile 2: Electrical / Electronics -->
+                    <label class="config-tile-card" for="prod-electrical">
+                      <input type="radio" name="product_category" id="prod-electrical" value="Electrical / Electronics" class="tile-real-input">
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-B</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">ELECTRICAL / ELECTRONICS</span>
+                          <span class="tile-desc">Electrical panels, switchgear, transformers and electronic components</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Tile 3: Automotive -->
+                    <label class="config-tile-card" for="prod-automotive">
+                      <input type="radio" name="product_category" id="prod-automotive" value="Automotive" class="tile-real-input">
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-C</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 17h14v-5l-2-4H7L5 12v5z"></path>
+                            <circle cx="7.5" cy="17.5" r="2.5"></circle>
+                            <circle cx="16.5" cy="17.5" r="2.5"></circle>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">AUTOMOTIVE</span>
+                          <span class="tile-desc">Automotive components, engine blocks, transmissions and assemblies</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Tile 4: Engineering Products -->
+                    <label class="config-tile-card" for="prod-engineering">
+                      <input type="radio" name="product_category" id="prod-engineering" value="Engineering Products" class="tile-real-input">
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-D</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">ENGINEERING PRODUCTS</span>
+                          <span class="tile-desc">Precision engineering parts, fabricated steel, pumps and valves</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Tile 5: Battery / Energy -->
+                    <label class="config-tile-card" for="prod-energy">
+                      <input type="radio" name="product_category" id="prod-energy" value="Battery / Energy" class="tile-real-input">
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-E</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="16" height="11" rx="2"></rect>
+                            <line x1="20" y1="11" x2="20" y2="14"></line>
+                            <line x1="6" y1="12.5" x2="10" y2="12.5"></line>
+                            <line x1="8" y1="10.5" x2="8" y2="14.5"></line>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">BATTERY / ENERGY</span>
+                          <span class="tile-desc">Battery systems, solar hardware and energy infrastructure equipment</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Tile 6: Other Industrial -->
+                    <label class="config-tile-card" for="prod-other">
+                      <input type="radio" name="product_category" id="prod-other" value="Other Industrial" class="tile-real-input">
+                      <div class="tile-card-inner">
+                        <div class="tile-top-bar">
+                          <span class="tile-index-tag">01-F</span>
+                          <span class="tile-check-indicator" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="tile-icon-wrap">
+                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                          </svg>
+                        </div>
+                        <div class="tile-content">
+                          <span class="tile-title">OTHER INDUSTRIAL</span>
+                          <span class="tile-desc">Other commercial goods, custom fabrications and specialized cargo</span>
+                        </div>
+                      </div>
+                    </label>
+
+                  </div>
+
+                  <div class="validation-message-box" id="step-1-error" style="display:none;" role="alert"></div>
                 </div>
-                <div class="step-details-body">
-                  <h4 class="step-title">YOUR REQUIREMENTS</h4>
-                  <p class="step-desc">Transit, storage &amp; handling profile</p>
+
+                <!-- ============================================================
+                     STEP 02: PACKAGING TYPE
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="2" role="tabpanel" aria-labelledby="step-2-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">02 / STRUCTURE &amp; CASING</span>
+                    <h3 class="step-pane-heading" id="step-2-heading">WHAT TYPE OF PACKAGING DO YOU NEED?</h3>
+                    <p class="step-pane-sub">Choose your preferred timber packaging type or select “Not Sure” for our engineering recommendation.</p>
+                  </div>
+
+                  <div class="package-cards-grid" role="radiogroup" aria-label="Packaging Type">
+                    
+                    <!-- Card 1: Wooden Pallet -->
+                    <label class="package-select-card" for="pack-pallet">
+                      <input type="radio" name="packaging_type" id="pack-pallet" value="Wooden Pallet" class="tile-real-input" checked>
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-A</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">WOODEN PALLET</span>
+                          <span class="package-desc">2-way &amp; 4-way heavy-duty timber base skids for warehouse racking and containerized freight.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Card 2: Wooden Crate -->
+                    <label class="package-select-card" for="pack-crate">
+                      <input type="radio" name="packaging_type" id="pack-crate" value="Wooden Crate" class="tile-real-input">
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-B</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">WOODEN CRATE</span>
+                          <span class="package-desc">Framed structural crating engineered for heavy machinery, riggings, and export freight.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Card 3: Wooden Box -->
+                    <label class="package-select-card" for="pack-box">
+                      <input type="radio" name="packaging_type" id="pack-box" value="Wooden Box" class="tile-real-input">
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-C</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">WOODEN BOX</span>
+                          <span class="package-desc">Fully enclosed solid timber containment offering maximum all-around impact protection.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Card 4: Nail-Less Plywood Box -->
+                    <label class="package-select-card" for="pack-nailless">
+                      <input type="radio" name="packaging_type" id="pack-nailless" value="Nail-Less Plywood Box" class="tile-real-input">
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-D</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">NAIL-LESS PLYWOOD BOX</span>
+                          <span class="package-desc">Steel-tongue modular interlock system providing lightweight strength &amp; tool-free assembly.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Card 5: Foldable / Collapsible Box -->
+                    <label class="package-select-card" for="pack-collapsible">
+                      <input type="radio" name="packaging_type" id="pack-collapsible" value="Foldable / Collapsible Box" class="tile-real-input">
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-E</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">FOLDABLE / COLLAPSIBLE BOX</span>
+                          <span class="package-desc">Knock-down modular timber enclosures engineered for high return-logistics volume savings.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    <!-- Card 6: Not Sure -->
+                    <label class="package-select-card package-card-recom" for="pack-notsure">
+                      <input type="radio" name="packaging_type" id="pack-notsure" value="Not Sure (Recommend)" class="tile-real-input">
+                      <div class="package-card-box">
+                        <div class="package-badge-row">
+                          <span class="package-num-tag">02-F</span>
+                          <span class="recom-badge">RECOMMENDED</span>
+                          <span class="package-check" aria-hidden="true">✓</span>
+                        </div>
+                        <div class="package-card-body">
+                          <span class="package-title">NOT SURE</span>
+                          <span class="package-desc">Rusat Timber Depot will analyze your dimensions and weight to recommend the most optimal packaging design.</span>
+                        </div>
+                      </div>
+                    </label>
+
+                  </div>
+
+                  <div class="validation-message-box" id="step-2-error" style="display:none;" role="alert"></div>
                 </div>
+
+                <!-- ============================================================
+                     STEP 03: DIMENSIONS & LOAD
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="3" role="tabpanel" aria-labelledby="step-3-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">03 / PAYLOAD METRICS</span>
+                    <h3 class="step-pane-heading" id="step-3-heading">TELL US ABOUT THE PRODUCT</h3>
+                    <p class="step-pane-sub">Provide approximate payload dimensions, mass, and center of gravity for engineering calculations.</p>
+                  </div>
+
+                  <!-- Dimensions Section -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">A</span>
+                        <h4 class="block-heading">Product Dimensions</h4>
+                      </div>
+                      
+                      <!-- Unit Switcher -->
+                      <div class="unit-toggle-group" role="group" aria-label="Dimension Unit">
+                        <span class="unit-label-prefix">Unit:</span>
+                        <div class="unit-pills-bar">
+                          <label class="unit-pill-option" for="dim-unit-mm">
+                            <input type="radio" name="dim_unit" id="dim-unit-mm" value="mm" checked>
+                            <span class="unit-pill-text">mm</span>
+                          </label>
+                          <label class="unit-pill-option" for="dim-unit-cm">
+                            <input type="radio" name="dim_unit" id="dim-unit-cm" value="cm">
+                            <span class="unit-pill-text">cm</span>
+                          </label>
+                          <label class="unit-pill-option" for="dim-unit-m">
+                            <input type="radio" name="dim_unit" id="dim-unit-m" value="m">
+                            <span class="unit-pill-text">m</span>
+                          </label>
+                          <label class="unit-pill-option" for="dim-unit-in">
+                            <input type="radio" name="dim_unit" id="dim-unit-in" value="in">
+                            <span class="unit-pill-text">in</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3 Dimension Inputs Grid -->
+                    <div class="dimensions-3col-grid">
+                      <div class="field-container">
+                        <label for="dim-length" class="clean-field-label">Length (L) *</label>
+                        <div class="input-with-unit">
+                          <input type="number" id="dim-length" name="length" class="config-text-input" placeholder="e.g. 1200" min="1" step="any" required>
+                          <span class="input-unit-tag current-dim-unit">mm</span>
+                        </div>
+                      </div>
+
+                      <div class="field-container">
+                        <label for="dim-width" class="clean-field-label">Width (W) *</label>
+                        <div class="input-with-unit">
+                          <input type="number" id="dim-width" name="width" class="config-text-input" placeholder="e.g. 800" min="1" step="any" required>
+                          <span class="input-unit-tag current-dim-unit">mm</span>
+                        </div>
+                      </div>
+
+                      <div class="field-container">
+                        <label for="dim-height" class="clean-field-label">Height (H) *</label>
+                        <div class="input-with-unit">
+                          <input type="number" id="dim-height" name="height" class="config-text-input" placeholder="e.g. 900" min="1" step="any" required>
+                          <span class="input-unit-tag current-dim-unit">mm</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Weight Section -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">B</span>
+                        <h4 class="block-heading">Approximate Product Weight *</h4>
+                      </div>
+
+                      <!-- Weight Unit Switcher -->
+                      <div class="unit-toggle-group" role="group" aria-label="Weight Unit">
+                        <span class="unit-label-prefix">Unit:</span>
+                        <div class="unit-pills-bar">
+                          <label class="unit-pill-option" for="weight-unit-kg">
+                            <input type="radio" name="weight_unit" id="weight-unit-kg" value="kg" checked>
+                            <span class="unit-pill-text">kg</span>
+                          </label>
+                          <label class="unit-pill-option" for="weight-unit-tonnes">
+                            <input type="radio" name="weight_unit" id="weight-unit-tonnes" value="tonnes">
+                            <span class="unit-pill-text">tonnes</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="weight-single-field">
+                      <div class="field-container" style="max-width: 320px;">
+                        <label for="prod-weight" class="clean-field-label">Payload Mass *</label>
+                        <div class="input-with-unit">
+                          <input type="number" id="prod-weight" name="weight" class="config-text-input" placeholder="e.g. 850" min="0.1" step="any" required>
+                          <span class="input-unit-tag current-weight-unit">kg</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Centre of Gravity Section -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">C</span>
+                        <h4 class="block-heading">Centre of Gravity / Weight Distribution</h4>
+                      </div>
+                    </div>
+
+                    <div class="cog-options-grid" role="radiogroup" aria-label="Centre of Gravity">
+                      <label class="cog-option-chip" for="cog-centred">
+                        <input type="radio" name="centre_of_gravity" id="cog-centred" value="Centred" checked>
+                        <div class="cog-chip-content">
+                          <span class="cog-dot"></span>
+                          <span class="cog-name">CENTRED</span>
+                          <span class="cog-sub">Uniform load</span>
+                        </div>
+                      </label>
+
+                      <label class="cog-option-chip" for="cog-offset">
+                        <input type="radio" name="centre_of_gravity" id="cog-offset" value="Offset">
+                        <div class="cog-chip-content">
+                          <span class="cog-dot"></span>
+                          <span class="cog-name">OFFSET</span>
+                          <span class="cog-sub">Heavy on one side</span>
+                        </div>
+                      </label>
+
+                      <label class="cog-option-chip" for="cog-irregular">
+                        <input type="radio" name="centre_of_gravity" id="cog-irregular" value="Irregular">
+                        <div class="cog-chip-content">
+                          <span class="cog-dot"></span>
+                          <span class="cog-name">IRREGULAR</span>
+                          <span class="cog-sub">Asymmetrical shape</span>
+                        </div>
+                      </label>
+
+                      <label class="cog-option-chip" for="cog-notsure">
+                        <input type="radio" name="centre_of_gravity" id="cog-notsure" value="Not Sure">
+                        <div class="cog-chip-content">
+                          <span class="cog-dot"></span>
+                          <span class="cog-name">NOT SURE</span>
+                          <span class="cog-sub">To be assessed</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="validation-message-box" id="step-3-error" style="display:none;" role="alert"></div>
+                </div>
+
+                <!-- ============================================================
+                     STEP 04: HANDLING & TRANSPORT
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="4" role="tabpanel" aria-labelledby="step-4-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">04 / LOGISTICS PROFILE</span>
+                    <h3 class="step-pane-heading" id="step-4-heading">HOW WILL THE PACKAGE BE HANDLED?</h3>
+                    <p class="step-pane-sub">Select all handling methods and logistics parameters that apply to your distribution chain.</p>
+                  </div>
+
+                  <!-- Handling Methods (Multi-Select) -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">A</span>
+                        <h4 class="block-heading">Handling Method (Select all that apply)</h4>
+                      </div>
+                    </div>
+
+                    <div class="handling-options-grid">
+                      
+                      <label class="handling-check-card" for="h-forklift">
+                        <input type="checkbox" name="handling_methods" id="h-forklift" value="Forklift" checked>
+                        <div class="handling-card-content">
+                          <span class="handling-check-box">✓</span>
+                          <div class="handling-text">
+                            <span class="handling-name">FORKLIFT</span>
+                            <span class="handling-sub">2-way &amp; 4-way tines</span>
+                          </div>
+                        </div>
+                      </label>
+
+                      <label class="handling-check-card" for="h-palletjack">
+                        <input type="checkbox" name="handling_methods" id="h-palletjack" value="Pallet Jack">
+                        <div class="handling-card-content">
+                          <span class="handling-check-box">✓</span>
+                          <div class="handling-text">
+                            <span class="handling-name">PALLET JACK</span>
+                            <span class="handling-sub">Manual / electric jack</span>
+                          </div>
+                        </div>
+                      </label>
+
+                      <label class="handling-check-card" for="h-crane">
+                        <input type="checkbox" name="handling_methods" id="h-crane" value="Crane / Lifting">
+                        <div class="handling-card-content">
+                          <span class="handling-check-box">✓</span>
+                          <div class="handling-text">
+                            <span class="handling-name">CRANE / LIFTING</span>
+                            <span class="handling-sub">Overhead slings &amp; hoists</span>
+                          </div>
+                        </div>
+                      </label>
+
+                      <label class="handling-check-card" for="h-manual">
+                        <input type="checkbox" name="handling_methods" id="h-manual" value="Manual Handling">
+                        <div class="handling-card-content">
+                          <span class="handling-check-box">✓</span>
+                          <div class="handling-text">
+                            <span class="handling-name">MANUAL HANDLING</span>
+                            <span class="handling-sub">Ergonomic crew lifting</span>
+                          </div>
+                        </div>
+                      </label>
+
+                      <label class="handling-check-card" for="h-multiple">
+                        <input type="checkbox" name="handling_methods" id="h-multiple" value="Multiple Methods">
+                        <div class="handling-card-content">
+                          <span class="handling-check-box">✓</span>
+                          <div class="handling-text">
+                            <span class="handling-name">MULTIPLE METHODS</span>
+                            <span class="handling-sub">Multi-modal supply chain</span>
+                          </div>
+                        </div>
+                      </label>
+
+                    </div>
+                  </div>
+
+                  <!-- Transportation Mode -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">B</span>
+                        <h4 class="block-heading">Transportation Mode</h4>
+                      </div>
+                    </div>
+
+                    <div class="transport-options-grid" role="radiogroup" aria-label="Transportation Mode">
+                      <label class="radio-pill-card" for="t-domestic">
+                        <input type="radio" name="transport_mode" id="t-domestic" value="Domestic">
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">DOMESTIC</span>
+                          <span class="pill-sub">National road &amp; rail</span>
+                        </div>
+                      </label>
+
+                      <label class="radio-pill-card" for="t-export">
+                        <input type="radio" name="transport_mode" id="t-export" value="Export" checked>
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">EXPORT</span>
+                          <span class="pill-sub">Sea freight &amp; air cargo</span>
+                        </div>
+                      </label>
+
+                      <label class="radio-pill-card" for="t-both">
+                        <input type="radio" name="transport_mode" id="t-both" value="Both">
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">BOTH</span>
+                          <span class="pill-sub">Domestic &amp; global transit</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Storage Profile -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">C</span>
+                        <h4 class="block-heading">Storage Conditions</h4>
+                      </div>
+                    </div>
+
+                    <div class="storage-options-grid" role="radiogroup" aria-label="Storage Conditions">
+                      <label class="radio-pill-card" for="s-short">
+                        <input type="radio" name="storage_profile" id="s-short" value="Short Term">
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">SHORT TERM</span>
+                          <span class="pill-sub">Direct shipment</span>
+                        </div>
+                      </label>
+
+                      <label class="radio-pill-card" for="s-long">
+                        <input type="radio" name="storage_profile" id="s-long" value="Long Term">
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">LONG TERM</span>
+                          <span class="pill-sub">Extended warehousing</span>
+                        </div>
+                      </label>
+
+                      <label class="radio-pill-card" for="s-stacked">
+                        <input type="radio" name="storage_profile" id="s-stacked" value="Stacked" checked>
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">STACKED</span>
+                          <span class="pill-sub">Multi-tier vertical load</span>
+                        </div>
+                      </label>
+
+                      <label class="radio-pill-card" for="s-notsure">
+                        <input type="radio" name="storage_profile" id="s-notsure" value="Not Sure">
+                        <div class="radio-pill-content">
+                          <span class="pill-dot"></span>
+                          <span class="pill-title">NOT SURE</span>
+                          <span class="pill-sub">To be determined</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="validation-message-box" id="step-4-error" style="display:none;" role="alert"></div>
+                </div>
+
+                <!-- ============================================================
+                     STEP 05: ADDITIONAL REQUIREMENTS
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="5" role="tabpanel" aria-labelledby="step-5-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">05 / SPECIAL ENGINEERING</span>
+                    <h3 class="step-pane-heading" id="step-5-heading">ANYTHING ELSE WE SHOULD KNOW?</h3>
+                    <p class="step-pane-sub">Specify special protection criteria, multi-trip reusability, and export compliance mandates.</p>
+                  </div>
+
+                  <!-- Textarea -->
+                  <div class="engineering-input-block">
+                    <div class="field-container">
+                      <label for="special-requirements-text" class="clean-field-label">Special Protection &amp; Technical Notes (Optional)</label>
+                      <textarea id="special-requirements-text" name="additional_requirements" class="config-textarea-input" rows="4" placeholder="Describe special protection, handling, storage or transportation requirements (e.g., moisture barrier lining, high-density foam cushioning, steel corner braces, internal saddles)..."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Reusable Packaging Option -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">A</span>
+                        <h4 class="block-heading">Do you require reusable packaging?</h4>
+                      </div>
+                    </div>
+
+                    <div class="tri-option-grid" role="radiogroup" aria-label="Reusable Packaging Requirement">
+                      <label class="tri-option-card" for="reuse-yes">
+                        <input type="radio" name="reusable_packaging" id="reuse-yes" value="Yes" checked>
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">YES</span>
+                          <span class="tri-sub">Multi-trip reusable design</span>
+                        </div>
+                      </label>
+
+                      <label class="tri-option-card" for="reuse-no">
+                        <input type="radio" name="reusable_packaging" id="reuse-no" value="No">
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">NO</span>
+                          <span class="tri-sub">One-way single consignment</span>
+                        </div>
+                      </label>
+
+                      <label class="tri-option-card" for="reuse-notsure">
+                        <input type="radio" name="reusable_packaging" id="reuse-notsure" value="Not Sure">
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">NOT SURE</span>
+                          <span class="tri-sub">Recommend based on logistics</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Export-Ready Packaging Option -->
+                  <div class="engineering-input-block">
+                    <div class="input-block-header">
+                      <div class="block-title-wrap">
+                        <span class="block-number">B</span>
+                        <h4 class="block-heading">Do you require export-ready packaging?</h4>
+                      </div>
+                    </div>
+
+                    <div class="tri-option-grid" role="radiogroup" aria-label="Export-Ready Packaging Requirement">
+                      <label class="tri-option-card" for="export-yes">
+                        <input type="radio" name="export_ready" id="export-yes" value="Yes" checked>
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">YES</span>
+                          <span class="tri-sub">International phytosanitary pass</span>
+                        </div>
+                      </label>
+
+                      <label class="tri-option-card" for="export-no">
+                        <input type="radio" name="export_ready" id="export-no" value="No">
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">NO</span>
+                          <span class="tri-sub">Standard non-export timber</span>
+                        </div>
+                      </label>
+
+                      <label class="tri-option-card" for="export-notsure">
+                        <input type="radio" name="export_ready" id="export-notsure" value="Not Sure">
+                        <div class="tri-card-inner">
+                          <span class="tri-dot"></span>
+                          <span class="tri-title">NOT SURE</span>
+                          <span class="tri-sub">Advisable for mixed freight</span>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- ISPM-15 Informational Advisory Note -->
+                    <div class="ispm-advisory-callout" id="ispm-note-box">
+                      <div class="advisory-icon-wrap">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="16" x2="12" y2="12"></line>
+                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                      </div>
+                      <div class="advisory-text-block">
+                        <span class="advisory-title">ISPM-15 Phytosanitary Compliance Note</span>
+                        <p class="advisory-desc">ISPM-15 compliant options are available subject to applicable treatment, marking and certification requirements.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="validation-message-box" id="step-5-error" style="display:none;" role="alert"></div>
+                </div>
+
+                <!-- ============================================================
+                     STEP 06: CONTACT DETAILS
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="6" role="tabpanel" aria-labelledby="step-6-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">06 / COMMUNICATION</span>
+                    <h3 class="step-pane-heading" id="step-6-heading">WHERE SHOULD WE SEND THE RESPONSE?</h3>
+                    <p class="step-pane-sub">Provide your professional contact details so our engineering desk can review your brief and respond with an exact proposal.</p>
+                  </div>
+
+                  <div class="contact-fields-grid">
+                    <div class="field-container">
+                      <label for="cfg-contact-name" class="clean-field-label">Full Name *</label>
+                      <input type="text" id="cfg-contact-name" name="contact_name" class="config-text-input" placeholder="e.g. Rajesh Kumar" required autocomplete="name">
+                    </div>
+
+                    <div class="field-container">
+                      <label for="cfg-contact-company" class="clean-field-label">Company Name *</label>
+                      <input type="text" id="cfg-contact-company" name="contact_company" class="config-text-input" placeholder="e.g. Precision Engineering Ltd" required autocomplete="organization">
+                    </div>
+
+                    <div class="field-container">
+                      <label for="cfg-contact-email" class="clean-field-label">Business Email Address *</label>
+                      <input type="email" id="cfg-contact-email" name="contact_email" class="config-text-input" placeholder="name@company.com" required autocomplete="email">
+                    </div>
+
+                    <div class="field-container">
+                      <label for="cfg-contact-phone" class="clean-field-label">Phone Number *</label>
+                      <input type="tel" id="cfg-contact-phone" name="contact_phone" class="config-text-input" placeholder="+91 98765 43210" required autocomplete="tel">
+                    </div>
+                  </div>
+
+                  <div class="field-container" style="margin-top: 1.5rem;">
+                    <label for="cfg-contact-notes" class="clean-field-label">Additional Message (Optional)</label>
+                    <textarea id="cfg-contact-notes" name="contact_notes" class="config-textarea-input" rows="2" placeholder="Any specific timeline, project delivery location, or batch frequency..."></textarea>
+                  </div>
+
+                  <div class="validation-message-box" id="step-6-error" style="display:none;" role="alert"></div>
+                </div>
+
+                <!-- ============================================================
+                     STEP 07: REVIEW REQUIREMENTS SCREEN
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="7" role="tabpanel" aria-labelledby="step-7-heading">
+                  <div class="step-pane-header">
+                    <span class="step-header-tag">07 / VERIFICATION</span>
+                    <h3 class="step-pane-heading" id="step-7-heading">REVIEW YOUR PACKAGING REQUIREMENTS</h3>
+                    <p class="step-pane-sub">Review your engineering specification summary below before submitting your enquiry to Rusat Timber Depot.</p>
+                  </div>
+
+                  <div class="review-specs-container" id="review-specs-matrix">
+                    <!-- Dynamically generated specification review table -->
+                  </div>
+
+                  <div class="review-confirmation-bar">
+                    <div class="review-bar-left">
+                      <span class="review-prompt-tag">READY FOR ENGINEERING REVIEW</span>
+                      <p class="review-prompt-text">Everything look right? Submit your packaging brief to request a technical proposal and quotation.</p>
+                    </div>
+                  </div>
+
+                  <div class="validation-message-box" id="step-7-error" style="display:none;" role="alert"></div>
+                </div>
+
+                <!-- ============================================================
+                     SUCCESS STATE (POST-SUBMISSION)
+                     ============================================================ -->
+                <div class="config-step-pane" data-pane="success" role="tabpanel" aria-labelledby="success-heading">
+                  <div class="config-success-shell">
+                    <div class="success-icon-badge" aria-hidden="true">✓</div>
+                    <span class="success-eyebrow">BRIEF RECORDED &bull; SPECIFICATION SAVED</span>
+                    <h3 class="success-headline" id="success-heading">
+                      YOUR PACKAGING BRIEF<br>
+                      HAS BEEN RECEIVED.
+                    </h3>
+                    <p class="success-supporting-text">
+                      Thank you for sharing your requirements. Rusat Timber Depot can review the details and respond regarding your custom packaging enquiry.
+                    </p>
+                    
+                    <div class="success-reference-card">
+                      <div class="ref-card-left">
+                        <span class="ref-label">ENGINEERING ENQUIRY REFERENCE</span>
+                        <span class="ref-code" id="success-ref-code">RTD-8942</span>
+                      </div>
+                      <div class="ref-card-right">
+                        <span class="ref-status-tag">PENDING TECHNICAL REVIEW</span>
+                      </div>
+                    </div>
+
+                    <div class="success-actions-row">
+                      <button type="button" class="btn btn-secondary" id="btn-restart-config">
+                        <span>Configure Another Brief</span>
+                      </button>
+                      <a href="#solutions" class="btn btn-accent">
+                        <span>Explore Standard Products</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Navigation Controls Bar -->
+                <div class="configurator-nav-footer" id="config-nav-footer">
+                  <button type="button" class="config-nav-btn config-btn-back" id="btn-step-back" style="visibility: hidden;">
+                    <span class="btn-arrow" aria-hidden="true">&larr;</span>
+                    <span>BACK</span>
+                  </button>
+
+                  <div class="config-nav-center">
+                    <span class="config-autosave-indicator">
+                      <span class="autosave-dot"></span>
+                      <span>Live Brief Synchronized</span>
+                    </span>
+                  </div>
+
+                  <button type="button" class="btn btn-accent config-nav-btn config-btn-next" id="btn-step-next">
+                    <span id="btn-next-label">CONTINUE</span>
+                    <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Sticky Live Packaging Brief Specification Sheet -->
+          <aside class="configurator-brief-col" aria-label="Live Packaging Brief Summary">
+            <div class="sticky-brief-sheet" id="sticky-brief-panel">
+              
+              <!-- Sheet Header -->
+              <div class="brief-sheet-header">
+                <div class="brief-header-meta">
+                  <span class="brief-tag">ENGINEERING SPEC SHEET</span>
+                  <div class="brief-live-pill">
+                    <span class="live-pulse-dot"></span>
+                    <span>LIVE SUMMARY</span>
+                  </div>
+                </div>
+                <h3 class="brief-sheet-title">YOUR PACKAGING BRIEF</h3>
+                <div class="brief-hairline-divider"></div>
               </div>
 
-              <!-- Step 03 -->
-              <div class="timeline-step-item">
-                <div class="step-node-header">
-                  <span class="step-index-num">03</span>
-                  <div class="step-node-dot"></div>
+              <!-- Specification Rows Matrix -->
+              <div class="brief-specs-matrix">
+                
+                <!-- Spec 1: Product -->
+                <div class="brief-spec-item" id="brief-row-product">
+                  <div class="spec-label-row">
+                    <span class="spec-label">YOUR PRODUCT</span>
+                    <button type="button" class="brief-jump-link" data-jump="1" title="Edit Product">Edit</button>
+                  </div>
+                  <div class="spec-value-display" id="brief-val-product">Machinery</div>
+                  <div class="spec-sub-display" id="brief-sub-product">Industrial machinery and equipment</div>
                 </div>
-                <div class="step-details-body">
-                  <h4 class="step-title">OUR ENGINEERING</h4>
-                  <p class="step-desc">Structural framing &amp; load calculation</p>
+
+                <!-- Spec 2: Packaging Type -->
+                <div class="brief-spec-item" id="brief-row-packaging">
+                  <div class="spec-label-row">
+                    <span class="spec-label">PACKAGING TYPE</span>
+                    <button type="button" class="brief-jump-link" data-jump="2" title="Edit Packaging">Edit</button>
+                  </div>
+                  <div class="spec-value-display" id="brief-val-packaging">Wooden Pallet</div>
+                  <div class="spec-sub-display" id="brief-sub-packaging">Heavy-duty timber base skids</div>
                 </div>
+
+                <!-- Spec 3: Dimensions -->
+                <div class="brief-spec-item" id="brief-row-dimensions">
+                  <div class="spec-label-row">
+                    <span class="spec-label">SIZE (L × W × H)</span>
+                    <button type="button" class="brief-jump-link" data-jump="3" title="Edit Dimensions">Edit</button>
+                  </div>
+                  <div class="spec-value-display font-mono" id="brief-val-dimensions">— × — × — mm</div>
+                  <div class="spec-sub-display" id="brief-sub-dimensions">Centre of gravity: Centred</div>
+                </div>
+
+                <!-- Spec 4: Weight & Load -->
+                <div class="brief-spec-item" id="brief-row-weight">
+                  <div class="spec-label-row">
+                    <span class="spec-label">PAYLOAD MASS</span>
+                    <button type="button" class="brief-jump-link" data-jump="3" title="Edit Weight">Edit</button>
+                  </div>
+                  <div class="spec-value-display font-mono" id="brief-val-weight">— kg</div>
+                </div>
+
+                <!-- Spec 5: Handling & Transit -->
+                <div class="brief-spec-item" id="brief-row-logistics">
+                  <div class="spec-label-row">
+                    <span class="spec-label">HANDLING &amp; LOGISTICS</span>
+                    <button type="button" class="brief-jump-link" data-jump="4" title="Edit Logistics">Edit</button>
+                  </div>
+                  <div class="spec-value-display" id="brief-val-logistics">Forklift &bull; Export</div>
+                  <div class="spec-sub-display" id="brief-sub-logistics">Storage: Stacked</div>
+                </div>
+
+                <!-- Spec 6: Special Engineering -->
+                <div class="brief-spec-item" id="brief-row-requirements">
+                  <div class="spec-label-row">
+                    <span class="spec-label">COMPLIANCE &amp; REUSE</span>
+                    <button type="button" class="brief-jump-link" data-jump="5" title="Edit Requirements">Edit</button>
+                  </div>
+                  <div class="spec-value-display" id="brief-val-compliance">ISPM-15 Export &bull; Reusable</div>
+                </div>
+
               </div>
 
-              <!-- Step 04 -->
-              <div class="timeline-step-item">
-                <div class="step-node-header">
-                  <span class="step-index-num">04</span>
-                  <div class="step-node-dot"></div>
+              <!-- Sheet Footer / Status -->
+              <div class="brief-sheet-footer">
+                <div class="brief-status-block">
+                  <span class="status-indicator-tag" id="brief-status-tag">CONFIGURING STEP 01</span>
+                  <div class="brief-progress-bar">
+                    <div class="brief-progress-fill" id="brief-progress-bar" style="width: 16.6%;"></div>
+                  </div>
                 </div>
-                <div class="step-details-body">
-                  <h4 class="step-title">PRECISION MANUFACTURING</h4>
-                  <p class="step-desc">Batch assembly &amp; quality control</p>
-                </div>
-              </div>
-
-              <!-- Step 05 -->
-              <div class="timeline-step-item step-item-final">
-                <div class="step-node-header">
-                  <span class="step-index-num">05</span>
-                  <div class="step-node-dot"></div>
-                </div>
-                <div class="step-details-body">
-                  <h4 class="step-title">RELIABLE PACKAGING</h4>
-                  <p class="step-desc">Assured freight protection</p>
+                <div class="brief-footer-note">
+                  <span>RUSAT TIMBER DEPOT &bull; SPECIFICATION DESK</span>
                 </div>
               </div>
 
             </div>
-          </div>
+          </aside>
+
         </div>
 
       </div>

@@ -235,6 +235,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
+  // 6b. FOOTER "GET IN TOUCH" FORM SUBMISSION HANDLER
+  // --------------------------------------------------------------------------
+  const footerNewsletterForm = document.getElementById("footer-newsletter-form");
+  if (footerNewsletterForm) {
+    footerNewsletterForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const submitBtn = footerNewsletterForm.querySelector('button[type="submit"] span');
+      if (submitBtn) {
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "Thank You ✓";
+
+        setTimeout(() => {
+          footerNewsletterForm.reset();
+          submitBtn.textContent = originalText;
+        }, 3000);
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // 7. DYNAMIC YEAR
   // --------------------------------------------------------------------------
   const currentYearSpan = document.getElementById("current-year");

@@ -243,7 +243,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-inner {
-  max-width: var(--container-hero);
+  max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 clamp(1.25rem, 4vw, 3rem);
   display: flex;
@@ -553,18 +553,15 @@ h1, h2, h3, h4, h5, h6 {
 .hero-backdrop-scrim {
   position: absolute;
   inset: 0;
-  background:
+  /* background:
     linear-gradient(100deg, rgba(10, 8, 6, 0.86) 0%, rgba(12, 9, 7, 0.62) 24%, rgba(14, 11, 8, 0.22) 46%, rgba(14, 11, 8, 0) 62%),
-    linear-gradient(0deg, rgba(8, 6, 5, 0.4) 0%, rgba(8, 6, 5, 0) 30%);
+    linear-gradient(0deg, rgba(8, 6, 5, 0.4) 0%, rgba(8, 6, 5, 0) 30%); */
 }
 
 /* Hero Copy Block */
 .hero-content-grid {
   position: relative;
   z-index: 2;
-  width: 100%;
-  padding-left: clamp(1.5rem, 7vw, 7.5rem);
-  padding-right: clamp(1.5rem, 4vw, 3rem);
 }
 
 .hero-copy-block {
@@ -4414,71 +4411,141 @@ h1, h2, h3, h4, h5, h6 {
    15. CONTACT / ARCHITECTURAL FOOTER (BLACK & ORANGE)
    ========================================================================== */
 .contact-editorial-section {
-  background-color: #0E0E0E;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #17100B 0%, #2E1A10 28%, #6B331A 62%, #D8582B 100%);
   color: #FFFFFF;
-  border-top: 1px solid #1E1E1E;
-  padding-top: clamp(4.5rem, 7vw, 6rem);
-  padding-bottom: 3.5rem;
+  padding-top: clamp(4rem, 7vw, 5.5rem);
+  padding-bottom: 0;
 }
 
-/* Top Branding Header (Outside Grid) */
-.footer-top-branding {
+/* Newsletter / Get in Touch Row */
+.footer-newsletter-row {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 3.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem 3rem;
+  flex-wrap: wrap;
+  padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 
-.footer-logo-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-bottom: 1.15rem;
-}
-
-.footer-brand-name {
+.footer-newsletter-title {
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #FFFFFF;
-  line-height: 1;
-}
-
-.footer-brand-sub {
-  font-family: var(--font-display);
-  font-size: 0.675rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   font-weight: 700;
-  letter-spacing: 0.28em;
-  color: #7A7A7A;
+  line-height: 1.25;
+  color: #FFF8F1;
+  max-width: 32rem;
+  margin: 0;
 }
 
-.footer-accent-line {
-  width: 32px;
-  height: 2.5px;
-  background-color: #EA580C;
+.footer-newsletter-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(23, 16, 11, 0.35);
+  border: 1px solid rgba(255, 248, 241, 0.25);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.4rem 0.4rem 1.35rem;
+  flex: 0 1 26rem;
 }
 
-.footer-primary-grid {
+.footer-newsletter-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: #FFF8F1;
+}
+
+.footer-newsletter-input::placeholder {
+  color: rgba(255, 248, 241, 0.55);
+}
+
+.footer-newsletter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #FFF8F1;
+  color: #2E1A10;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.7rem 0.5rem 0.7rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.825rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.footer-newsletter-btn:hover {
+  background: #FFFFFF;
+}
+
+.footer-newsletter-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #FFF8F1;
+  flex-shrink: 0;
+}
+
+/* Dashed Divider with Ornament */
+.footer-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+.footer-divider-line {
+  flex: 1;
+  height: 0;
+  border-top: 1px dashed rgba(255, 248, 241, 0.3);
+}
+
+.footer-divider-ornament {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 248, 241, 0.3);
+  color: rgba(255, 248, 241, 0.75);
+  flex-shrink: 0;
+}
+
+/* Link Columns */
+.footer-columns {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: clamp(1.5rem, 3.5vw, 3.5rem);
   align-items: flex-start;
-  padding-bottom: 4.5rem;
+  padding-bottom: clamp(3.5rem, 6vw, 5rem);
 }
 
-.footer-nav-col {
+.footer-col {
   display: flex;
   flex-direction: column;
 }
 
-/* Col Tags (REGISTERED OFFICE, BRANCH, CONTACT, QUICK LINKS) */
+/* Col Tags (QUICK LINKS, REGISTERED OFFICE, BRANCH, GET IN TOUCH) */
 .footer-col-tag {
   display: block;
   font-family: var(--font-display);
   font-size: 0.725rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #7A7A7A;
+  color: rgba(255, 248, 241, 0.55);
   text-transform: uppercase;
   margin-bottom: 1.15rem;
 }
@@ -4486,7 +4553,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer-address {
   font-style: normal;
   font-size: 0.875rem;
-  color: #A0A0A0;
+  color: rgba(255, 248, 241, 0.85);
   line-height: 1.65;
 }
 
@@ -4506,12 +4573,12 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.65rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #D4D4D4;
+  color: rgba(255, 248, 241, 0.85);
   transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .footer-icon {
-  color: #EA580C;
+  color: #FFC49A;
   flex-shrink: 0;
 }
 
@@ -4521,11 +4588,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Quick Links Column */
-.footer-quick-links-col {
-  display: flex;
-  flex-direction: column;
-}
-
 .footer-nav-links-list {
   list-style: none;
   padding: 0;
@@ -4538,7 +4600,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer-nav-link {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #8C8C8C;
+  color: rgba(255, 248, 241, 0.7);
   transition: color var(--transition-fast), transform var(--transition-fast);
   display: inline-block;
 }
@@ -4548,21 +4610,46 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateX(3px);
 }
 
+/* Giant Brand Wordmark */
+.footer-wordmark-wrap {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0.8;
+  text-align: center;
+  padding: 0 1rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.footer-wordmark {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 19vw, 13rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, rgba(255, 248, 241, 0.95) 0%, rgba(255, 196, 154, 0.55) 55%, rgba(216, 88, 43, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* Horizontal Bottom Bar */
 .footer-bottom-bar {
-  padding-top: 2.25rem;
-  border-top: 1px solid #1E1E1E;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-top: 1px solid rgba(255, 248, 241, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: #666666;
+  color: rgba(255, 248, 241, 0.6);
   flex-wrap: wrap;
   gap: 1.5rem;
 }
 
 .footer-meta-copyright {
-  color: #666666;
+  color: rgba(255, 248, 241, 0.6);
   font-size: 0.725rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -4576,31 +4663,13 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.725rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #666666;
+  color: rgba(255, 248, 241, 0.6);
   text-transform: uppercase;
 }
 
 .creed-dot {
-  color: #EA580C;
+  color: #FFC49A;
   font-size: 0.9rem;
-}
-
-.footer-quick-links {
-  display: flex;
-  align-items: center;
-  gap: 1.35rem;
-  flex-wrap: wrap;
-}
-
-.footer-quick-links a {
-  color: #8C8C8C;
-  font-size: 0.775rem;
-  font-weight: 500;
-  transition: color var(--transition-fast);
-}
-
-.footer-quick-links a:hover {
-  color: #FFFFFF;
 }
 
 /* ==========================================================================
@@ -4868,7 +4937,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 280px;
   }
 
-  .footer-primary-grid {
+  .footer-columns {
     grid-template-columns: repeat(2, 1fr);
     gap: 3rem 2.5rem;
   }
@@ -4944,6 +5013,14 @@ h1, h2, h3, h4, h5, h6 {
     align-items: flex-start;
     gap: 1.25rem;
   }
+
+  .footer-newsletter-row {
+    align-items: stretch;
+  }
+
+  .footer-newsletter-form {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 640px) {
@@ -4968,9 +5045,25 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
   }
 
-  .footer-primary-grid {
+  .footer-columns {
     grid-template-columns: 1fr;
     gap: 2.25rem;
+  }
+
+  .footer-newsletter-form {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  .footer-newsletter-input {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .footer-newsletter-btn {
+    justify-content: center;
+    padding: 0.7rem 0.9rem;
   }
 
   .nailless-features-grid {

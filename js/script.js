@@ -170,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     quoteModal.classList.add("open");
     quoteModal.setAttribute("aria-hidden", "false");
+    quoteModal.scrollTop = 0;
     document.body.style.overflow = "hidden";
 
     // Focus first input
@@ -483,4 +484,660 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // --------------------------------------------------------------------------
+  // 11. CUSTOM PACKAGING CONFIGURATOR & ENGINEERING BRIEF GENERATOR
+  // --------------------------------------------------------------------------
+  const configuratorRoot = document.getElementById("packaging-configurator-root");
+
+  if (configuratorRoot) {
+    // Configurator State Model
+    const configState = {
+      currentStep: 1,
+      totalSteps: 6,
+      productCategory: "Machinery",
+      packagingType: "Wooden Pallet",
+      length: "",
+      width: "",
+      height: "",
+      dimUnit: "mm",
+      weight: "",
+      weightUnit: "kg",
+      centreOfGravity: "Centred",
+      handlingMethods: ["Forklift"],
+      transportMode: "Export",
+      storageProfile: "Stacked",
+      additionalRequirements: "",
+      reusablePackaging: "Yes",
+      exportReady: "Yes",
+      contactName: "",
+      contactCompany: "",
+      contactEmail: "",
+      contactPhone: "",
+      contactNotes: "",
+      referenceCode: ""
+    };
+
+    const stepTitles = {
+      1: "YOUR PRODUCT",
+      2: "PACKAGING TYPE",
+      3: "DIMENSIONS & LOAD",
+      4: "HANDLING & TRANSPORT",
+      5: "REQUIREMENTS",
+      6: "CONTACT DETAILS",
+      7: "REVIEW REQUIREMENTS"
+    };
+
+    // DOM Elements
+    const form = document.getElementById("custom-configurator-form");
+    const stepPanes = configuratorRoot.querySelectorAll(".config-step-pane");
+    const trackNodes = configuratorRoot.querySelectorAll(".step-track-node");
+    const trackConnectors = configuratorRoot.querySelectorAll(".track-connector");
+    const stepCounterEl = document.getElementById("config-step-counter");
+    const stepNameEl = document.getElementById("config-step-name");
+    const btnBack = document.getElementById("btn-step-back");
+    const btnNext = document.getElementById("btn-step-next");
+    const btnNextLabel = document.getElementById("btn-next-label");
+    const navFooter = document.getElementById("config-nav-footer");
+    const btnRestart = document.getElementById("btn-restart-config");
+    const mobileToggleBtn = document.getElementById("mobile-brief-toggle");
+    const mobileBriefContent = document.getElementById("mobile-brief-content");
+    const mobileBriefTarget = document.getElementById("mobile-brief-target");
+    const mobileBriefBadge = document.getElementById("mobile-brief-badge");
+
+    // Live Brief DOM Elements
+    const briefValProduct = document.getElementById("brief-val-product");
+    const briefSubProduct = document.getElementById("brief-sub-product");
+    const briefValPackaging = document.getElementById("brief-val-packaging");
+    const briefSubPackaging = document.getElementById("brief-sub-packaging");
+    const briefValDimensions = document.getElementById("brief-val-dimensions");
+    const briefSubDimensions = document.getElementById("brief-sub-dimensions");
+    const briefValWeight = document.getElementById("brief-val-weight");
+    const briefValLogistics = document.getElementById("brief-val-logistics");
+    const briefSubLogistics = document.getElementById("brief-sub-logistics");
+    const briefValCompliance = document.getElementById("brief-val-compliance");
+    const briefStatusTag = document.getElementById("brief-status-tag");
+    const briefProgressBar = document.getElementById("brief-progress-bar");
+    const reviewMatrix = document.getElementById("review-specs-matrix");
+    const successRefCode = document.getElementById("success-ref-code");
+
+    // Product Category Subtitle map
+    const productSubtitles = {
+      "Machinery": "Industrial machinery and equipment",
+      "Electrical / Electronics": "Electrical and electronic components",
+      "Automotive": "Automotive components and assemblies",
+      "Engineering Products": "Engineering products and industrial parts",
+      "Battery / Energy": "Battery-industry and energy-related products",
+      "Other Industrial": "Other industrial commercial products"
+    };
+
+    const packagingSubtitles = {
+      "Wooden Pallet": "Heavy-duty 2-way / 4-way base skids",
+      "Wooden Crate": "Framed heavy equipment timber crating",
+      "Wooden Box": "Solid timber enclosed containment",
+      "Nail-Less Plywood Box": "Steel-tongue modular interlock casing",
+      "Foldable / Collapsible Box": "Knock-down return-transit system",
+      "Not Sure (Recommend)": "Custom engineered recommendation"
+    };
+
+    // Update Live Brief UI
+    const updateLiveBrief = () => {
+      // 1. Product
+      if (briefValProduct) {
+        briefValProduct.textContent = configState.productCategory;
+        briefValProduct.classList.add("spec-value-updated");
+        setTimeout(() => briefValProduct.classList.remove("spec-value-updated"), 600);
+      }
+      if (briefSubProduct) {
+        briefSubProduct.textContent = productSubtitles[configState.productCategory] || "Custom payload";
+      }
+
+      // 2. Packaging
+      if (briefValPackaging) {
+        briefValPackaging.textContent = configState.packagingType;
+        briefValPackaging.classList.add("spec-value-updated");
+        setTimeout(() => briefValPackaging.classList.remove("spec-value-updated"), 600);
+      }
+      if (briefSubPackaging) {
+        briefSubPackaging.textContent = packagingSubtitles[configState.packagingType] || "Timber packaging";
+      }
+
+      // 3. Dimensions
+      if (briefValDimensions) {
+        const l = configState.length || "—";
+        const w = configState.width || "—";
+        const h = configState.height || "—";
+        briefValDimensions.textContent = `${l} × ${w} × ${h} ${configState.dimUnit}`;
+      }
+      if (briefSubDimensions) {
+        briefSubDimensions.textContent = `Centre of gravity: ${configState.centreOfGravity}`;
+      }
+
+      // 4. Weight
+      if (briefValWeight) {
+        const wt = configState.weight ? `${configState.weight} ${configState.weightUnit}` : `— ${configState.weightUnit}`;
+        briefValWeight.textContent = wt;
+      }
+
+      // 5. Logistics
+      if (briefValLogistics) {
+        const handlingStr = configState.handlingMethods.length > 0 ? configState.handlingMethods.join(" + ") : "Not specified";
+        briefValLogistics.textContent = `${handlingStr} • ${configState.transportMode}`;
+      }
+      if (briefSubLogistics) {
+        briefSubLogistics.textContent = `Storage: ${configState.storageProfile}`;
+      }
+
+      // 6. Compliance & Reusability
+      if (briefValCompliance) {
+        const ispmText = configState.exportReady === "Yes" ? "ISPM-15 Export" : "Standard Freight";
+        const reuseText = configState.reusablePackaging === "Yes" ? "Reusable" : "Single-Trip";
+        briefValCompliance.textContent = `${ispmText} • ${reuseText}`;
+      }
+
+      // Update progress bar in brief
+      if (briefProgressBar) {
+        const pct = Math.min(100, (configState.currentStep / configState.totalSteps) * 100);
+        briefProgressBar.style.width = `${pct}%`;
+      }
+
+      // Update status tag in brief
+      if (briefStatusTag) {
+        if (configState.currentStep <= 6) {
+          briefStatusTag.textContent = `CONFIGURING STEP 0${configState.currentStep}`;
+        } else if (configState.currentStep === 7) {
+          briefStatusTag.textContent = `READY FOR REVIEW`;
+        } else {
+          briefStatusTag.textContent = `SPECIFICATION RECORDED`;
+        }
+      }
+
+      // Mobile Brief Sync
+      if (mobileBriefTarget) {
+        const stickyPanel = document.querySelector(".sticky-brief-sheet");
+        if (stickyPanel) {
+          const matrixClone = stickyPanel.querySelector(".brief-specs-matrix");
+          if (matrixClone) {
+            mobileBriefTarget.innerHTML = matrixClone.innerHTML;
+            // Attach jump link listeners in mobile brief
+            mobileBriefTarget.querySelectorAll(".brief-jump-link").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const targetStep = parseInt(btn.getAttribute("data-jump"), 10);
+                if (targetStep) {
+                  goToStep(targetStep);
+                  if (mobileBriefContent) mobileBriefContent.style.display = "none";
+                  if (mobileToggleBtn) mobileToggleBtn.setAttribute("aria-expanded", "false");
+                }
+              });
+            });
+          }
+        }
+      }
+
+      if (mobileBriefBadge) {
+        mobileBriefBadge.textContent = configState.currentStep <= 6 ? `Step 0${configState.currentStep}` : `Review`;
+      }
+    };
+
+    // Clear Error Message
+    const clearError = (stepNum) => {
+      const errBox = document.getElementById(`step-${stepNum}-error`);
+      if (errBox) {
+        errBox.style.display = "none";
+        errBox.textContent = "";
+      }
+      const pane = configuratorRoot.querySelector(`.config-step-pane[data-pane="${stepNum}"]`);
+      if (pane) {
+        pane.querySelectorAll(".has-error").forEach((el) => el.classList.remove("has-error"));
+      }
+    };
+
+    // Show Error Message
+    const showError = (stepNum, message, targetInputId = null) => {
+      const errBox = document.getElementById(`step-${stepNum}-error`);
+      if (errBox) {
+        errBox.textContent = message;
+        errBox.style.display = "block";
+      }
+      if (targetInputId) {
+        const targetInput = document.getElementById(targetInputId);
+        if (targetInput) {
+          targetInput.classList.add("has-error");
+          targetInput.focus();
+        }
+      }
+    };
+
+    // Step Validation Engine
+    const validateStep = (stepNum) => {
+      clearError(stepNum);
+
+      if (stepNum === 1) {
+        if (!configState.productCategory) {
+          showError(1, "Please select a product category to proceed.");
+          return false;
+        }
+        return true;
+      }
+
+      if (stepNum === 2) {
+        if (!configState.packagingType) {
+          showError(2, "Please select a packaging type or 'Not Sure'.");
+          return false;
+        }
+        return true;
+      }
+
+      if (stepNum === 3) {
+        const lengthInput = document.getElementById("dim-length");
+        const widthInput = document.getElementById("dim-width");
+        const heightInput = document.getElementById("dim-height");
+        const weightInput = document.getElementById("prod-weight");
+
+        const l = parseFloat(lengthInput.value);
+        const w = parseFloat(widthInput.value);
+        const h = parseFloat(heightInput.value);
+        const wt = parseFloat(weightInput.value);
+
+        if (isNaN(l) || l <= 0) {
+          showError(3, "Please enter a valid numeric Length (greater than 0).", "dim-length");
+          return false;
+        }
+        if (isNaN(w) || w <= 0) {
+          showError(3, "Please enter a valid numeric Width (greater than 0).", "dim-width");
+          return false;
+        }
+        if (isNaN(h) || h <= 0) {
+          showError(3, "Please enter a valid numeric Height (greater than 0).", "dim-height");
+          return false;
+        }
+        if (isNaN(wt) || wt <= 0) {
+          showError(3, "Please enter an approximate numeric payload weight.", "prod-weight");
+          return false;
+        }
+
+        configState.length = lengthInput.value;
+        configState.width = widthInput.value;
+        configState.height = heightInput.value;
+        configState.weight = weightInput.value;
+        return true;
+      }
+
+      if (stepNum === 4) {
+        if (configState.handlingMethods.length === 0) {
+          showError(4, "Please select at least one handling method (e.g. Forklift).");
+          return false;
+        }
+        return true;
+      }
+
+      if (stepNum === 5) {
+        const reqText = document.getElementById("special-requirements-text");
+        if (reqText) configState.additionalRequirements = reqText.value;
+        return true;
+      }
+
+      if (stepNum === 6) {
+        const nameInput = document.getElementById("cfg-contact-name");
+        const compInput = document.getElementById("cfg-contact-company");
+        const emailInput = document.getElementById("cfg-contact-email");
+        const phoneInput = document.getElementById("cfg-contact-phone");
+        const notesInput = document.getElementById("cfg-contact-notes");
+
+        if (!nameInput.value.trim()) {
+          showError(6, "Please enter your full name.", "cfg-contact-name");
+          return false;
+        }
+        if (!compInput.value.trim()) {
+          showError(6, "Please enter your company or organization name.", "cfg-contact-company");
+          return false;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value.trim())) {
+          showError(6, "Please enter a valid business email address.", "cfg-contact-email");
+          return false;
+        }
+        if (!phoneInput.value.trim() || phoneInput.value.trim().length < 6) {
+          showError(6, "Please enter a valid contact phone number.", "cfg-contact-phone");
+          return false;
+        }
+
+        configState.contactName = nameInput.value.trim();
+        configState.contactCompany = compInput.value.trim();
+        configState.contactEmail = emailInput.value.trim();
+        configState.contactPhone = phoneInput.value.trim();
+        if (notesInput) configState.contactNotes = notesInput.value.trim();
+        return true;
+      }
+
+      return true;
+    };
+
+    // Render Review Matrix (Step 07)
+    const renderReviewScreen = () => {
+      if (!reviewMatrix) return;
+
+      const dimStr = `${configState.length || "1200"} × ${configState.width || "800"} × ${configState.height || "900"} ${configState.dimUnit}`;
+      const weightStr = `${configState.weight || "850"} ${configState.weightUnit} (Centre of Gravity: ${configState.centreOfGravity})`;
+      const handlingStr = configState.handlingMethods.join(", ") || "Forklift";
+
+      reviewMatrix.innerHTML = `
+        <!-- 1. Product -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">01 / YOUR PRODUCT</span>
+            <span class="review-group-val">${configState.productCategory}</span>
+            <span class="review-group-sub">${productSubtitles[configState.productCategory] || ""}</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="1">Edit →</button>
+        </div>
+
+        <!-- 2. Packaging Type -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">02 / PACKAGING TYPE</span>
+            <span class="review-group-val">${configState.packagingType}</span>
+            <span class="review-group-sub">${packagingSubtitles[configState.packagingType] || ""}</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="2">Edit →</button>
+        </div>
+
+        <!-- 3. Dimensions & Load -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">03 / DIMENSIONS &amp; MASS</span>
+            <span class="review-group-val">${dimStr} &bull; ${weightStr}</span>
+            <span class="review-group-sub">Engineering calculations based on payload parameters</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="3">Edit →</button>
+        </div>
+
+        <!-- 4. Handling & Transport -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">04 / HANDLING &amp; LOGISTICS</span>
+            <span class="review-group-val">${handlingStr} &bull; ${configState.transportMode} Transit</span>
+            <span class="review-group-sub">Storage: ${configState.storageProfile}</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="4">Edit →</button>
+        </div>
+
+        <!-- 5. Additional Requirements -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">05 / SPECIAL REQUIREMENTS &amp; COMPLIANCE</span>
+            <span class="review-group-val">Export ISPM-15: ${configState.exportReady} &bull; Reusable: ${configState.reusablePackaging}</span>
+            <span class="review-group-sub">${configState.additionalRequirements ? configState.additionalRequirements : "Standard protection specifications"}</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="5">Edit →</button>
+        </div>
+
+        <!-- 6. Contact Details -->
+        <div class="review-spec-group">
+          <div class="review-group-left">
+            <span class="review-group-tag">06 / CONTACT &amp; PROPOSAL ROUTING</span>
+            <span class="review-group-val">${configState.contactName} (${configState.contactCompany})</span>
+            <span class="review-group-sub">${configState.contactEmail} &bull; ${configState.contactPhone}</span>
+          </div>
+          <button type="button" class="review-edit-btn" data-jump="6">Edit →</button>
+        </div>
+      `;
+
+      // Attach jump link listeners
+      reviewMatrix.querySelectorAll(".review-edit-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetStep = parseInt(btn.getAttribute("data-jump"), 10);
+          if (targetStep) goToStep(targetStep);
+        });
+      });
+    };
+
+    // Go to Specific Step
+    const goToStep = (stepNum) => {
+      configState.currentStep = stepNum;
+
+      // Update Tracker Bar UI
+      if (stepCounterEl) {
+        if (stepNum <= 6) {
+          stepCounterEl.textContent = `STEP 0${stepNum} OF 06`;
+        } else if (stepNum === 7) {
+          stepCounterEl.textContent = `FINAL SPECIFICATION REVIEW`;
+        } else {
+          stepCounterEl.textContent = `ENQUIRY RECORDED`;
+        }
+      }
+
+      if (stepNameEl) {
+        stepNameEl.textContent = stepTitles[stepNum] || "CUSTOM PACKAGING";
+      }
+
+      // Update Track Nodes
+      trackNodes.forEach((node) => {
+        const nodeStep = parseInt(node.getAttribute("data-step"), 10);
+        const isActive = nodeStep === stepNum;
+        const isCompleted = nodeStep < stepNum || stepNum > 6;
+        node.classList.toggle("is-active", isActive);
+        node.classList.toggle("is-completed", isCompleted);
+        node.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      // Update Track Connectors
+      trackConnectors.forEach((conn, idx) => {
+        const connectorStep = idx + 1;
+        conn.classList.toggle("is-filled", connectorStep < stepNum);
+      });
+
+      // Show Active Pane
+      stepPanes.forEach((pane) => {
+        const paneId = pane.getAttribute("data-pane");
+        const isTarget = paneId === String(stepNum) || (stepNum === "success" && paneId === "success");
+        pane.classList.toggle("is-visible", isTarget);
+      });
+
+      // Handle Step Specific Actions
+      if (stepNum === 7) {
+        renderReviewScreen();
+      }
+
+      // Update Footer Navigation Controls
+      if (navFooter) {
+        if (stepNum === "success") {
+          navFooter.style.display = "none";
+        } else {
+          navFooter.style.display = "flex";
+          // Back Button
+          if (btnBack) {
+            btnBack.style.visibility = stepNum === 1 ? "hidden" : "visible";
+          }
+          // Next Button Label
+          if (btnNextLabel) {
+            if (stepNum < 6) {
+              btnNextLabel.textContent = "CONTINUE";
+            } else if (stepNum === 6) {
+              btnNextLabel.textContent = "REVIEW REQUIREMENTS";
+            } else if (stepNum === 7) {
+              btnNextLabel.textContent = "REQUEST A QUOTE";
+            }
+          }
+        }
+      }
+
+      updateLiveBrief();
+
+      // Smooth scroll back to configurator if scrolled past or transitioning steps
+      const headerHeight = header ? header.offsetHeight : 70;
+      const configuratorTop = configuratorRoot.getBoundingClientRect().top + window.scrollY - (headerHeight + 20);
+      if (Math.abs(window.scrollY - configuratorTop) > 60) {
+        window.scrollTo({
+          top: configuratorTop,
+          behavior: "smooth"
+        });
+      }
+    };
+
+    // Step Track Node Click
+    trackNodes.forEach((node) => {
+      node.addEventListener("click", () => {
+        const targetStep = parseInt(node.getAttribute("data-step"), 10);
+        // Only allow clicking to steps already reached or step 1
+        if (targetStep < configState.currentStep) {
+          goToStep(targetStep);
+        } else if (targetStep > configState.currentStep) {
+          if (validateStep(configState.currentStep)) {
+            goToStep(targetStep);
+          }
+        }
+      });
+    });
+
+    // Quick Jump Links in Sticky Brief
+    document.querySelectorAll(".brief-jump-link").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetStep = parseInt(btn.getAttribute("data-jump"), 10);
+        if (targetStep) goToStep(targetStep);
+      });
+    });
+
+    // Back Button Click
+    if (btnBack) {
+      btnBack.addEventListener("click", () => {
+        if (configState.currentStep > 1) {
+          goToStep(configState.currentStep - 1);
+        }
+      });
+    }
+
+    // Next / Submit Button Click
+    if (btnNext) {
+      btnNext.addEventListener("click", () => {
+        if (configState.currentStep <= 6) {
+          if (validateStep(configState.currentStep)) {
+            goToStep(configState.currentStep + 1);
+          }
+        } else if (configState.currentStep === 7) {
+          // Final Submission
+          submitConfiguratorBrief();
+        }
+      });
+    }
+
+    // Brief Submission Handler
+    const submitConfiguratorBrief = () => {
+      // Generate realistic reference code
+      const randomDigits = Math.floor(1000 + Math.random() * 9000);
+      configState.referenceCode = `RTD-${randomDigits}`;
+
+      if (successRefCode) {
+        successRefCode.textContent = configState.referenceCode;
+      }
+
+      // Transition to success state
+      goToStep("success");
+    };
+
+    // Restart Configurator Handler
+    if (btnRestart) {
+      btnRestart.addEventListener("click", () => {
+        if (form) form.reset();
+        configState.length = "";
+        configState.width = "";
+        configState.height = "";
+        configState.weight = "";
+        configState.additionalRequirements = "";
+        configState.contactName = "";
+        configState.contactCompany = "";
+        configState.contactEmail = "";
+        configState.contactPhone = "";
+        configState.contactNotes = "";
+        goToStep(1);
+      });
+    }
+
+    // Input Change Listeners for Reactive Brief Updates
+    form.addEventListener("change", (e) => {
+      const target = e.target;
+      if (!target) return;
+
+      // Product Category
+      if (target.name === "product_category") {
+        configState.productCategory = target.value;
+      }
+      // Packaging Type
+      if (target.name === "packaging_type") {
+        configState.packagingType = target.value;
+      }
+      // Dimension Unit
+      if (target.name === "dim_unit") {
+        configState.dimUnit = target.value;
+        document.querySelectorAll(".current-dim-unit").forEach((el) => (el.textContent = target.value));
+      }
+      // Weight Unit
+      if (target.name === "weight_unit") {
+        configState.weightUnit = target.value;
+        document.querySelectorAll(".current-weight-unit").forEach((el) => (el.textContent = target.value));
+      }
+      // Centre of Gravity
+      if (target.name === "centre_of_gravity") {
+        configState.centreOfGravity = target.value;
+      }
+      // Handling Methods (Checkboxes)
+      if (target.name === "handling_methods") {
+        const checkedMethods = [];
+        form.querySelectorAll('input[name="handling_methods"]:checked').forEach((cb) => {
+          checkedMethods.push(cb.value);
+        });
+        configState.handlingMethods = checkedMethods;
+      }
+      // Transportation Mode
+      if (target.name === "transport_mode") {
+        configState.transportMode = target.value;
+      }
+      // Storage Profile
+      if (target.name === "storage_profile") {
+        configState.storageProfile = target.value;
+      }
+      // Reusable Packaging
+      if (target.name === "reusable_packaging") {
+        configState.reusablePackaging = target.value;
+      }
+      // Export Ready
+      if (target.name === "export_ready") {
+        configState.exportReady = target.value;
+      }
+
+      updateLiveBrief();
+    });
+
+    // Realtime Input Listeners (Dimensions, Weight, Contact)
+    form.addEventListener("input", (e) => {
+      const target = e.target;
+      if (!target) return;
+
+      if (target.name === "length") configState.length = target.value;
+      if (target.name === "width") configState.width = target.value;
+      if (target.name === "height") configState.height = target.value;
+      if (target.name === "weight") configState.weight = target.value;
+      if (target.name === "additional_requirements") configState.additionalRequirements = target.value;
+      if (target.name === "contact_name") configState.contactName = target.value;
+      if (target.name === "contact_company") configState.contactCompany = target.value;
+      if (target.name === "contact_email") configState.contactEmail = target.value;
+      if (target.name === "contact_phone") configState.contactPhone = target.value;
+      if (target.name === "contact_notes") configState.contactNotes = target.value;
+
+      updateLiveBrief();
+    });
+
+    // Mobile Brief Drawer Accordion Toggle
+    if (mobileToggleBtn && mobileBriefContent) {
+      mobileToggleBtn.addEventListener("click", () => {
+        const isExpanded = mobileToggleBtn.getAttribute("aria-expanded") === "true";
+        mobileToggleBtn.setAttribute("aria-expanded", !isExpanded ? "true" : "false");
+        mobileBriefContent.style.display = isExpanded ? "none" : "block";
+      });
+    }
+
+    // Initialize Configurator State
+    updateLiveBrief();
+  }
 });
+

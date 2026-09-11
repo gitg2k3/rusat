@@ -1746,17 +1746,17 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1.75rem 0 2.5rem 0;
 }
 
-/* 4-Column Solutions Cards Grid */
+/* 2x2 Solutions Cards Grid */
 .solutions-cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.25rem, 2vw, 1.75rem);
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 2.5vw, 2.25rem);
 }
 
 .solution-card-item {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg);
+  background-color: #FFFFFF;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -1765,9 +1765,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .solution-card-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-floating);
-  border-color: rgba(216, 88, 43, 0.35);
+  border-color: rgba(216, 88, 43, 0.4);
 }
 
 .solution-card-item.is-hidden {
@@ -1778,8 +1778,8 @@ h1, h2, h3, h4, h5, h6 {
 .solution-card-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  min-height: 190px;
+  aspect-ratio: 16 / 9.5;
+  min-height: 240px;
   overflow: hidden;
   background-color: var(--color-surface-subtle);
   border-bottom: 1px solid var(--color-border);
@@ -1794,13 +1794,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .solution-card-item:hover .solution-card-img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .solution-card-tag {
   position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
+  top: 1rem;
+  right: 1rem;
   font-family: var(--font-display);
   font-size: 0.65rem;
   font-weight: 700;
@@ -1810,7 +1810,7 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: #FFFFFF;
-  padding: 0.25rem 0.65rem;
+  padding: 0.3rem 0.75rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1823,30 +1823,42 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  padding: clamp(1.25rem, 1.75vw, 1.5rem);
+  padding: clamp(1.35rem, 2vw, 1.85rem);
+  background-color: #FFFFFF;
+}
+
+.solution-card-index {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-bottom: 0.4rem;
+  display: inline-block;
+  line-height: 1;
 }
 
 .solution-card-heading {
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+  font-size: clamp(1.35rem, 1.75vw, 1.65rem);
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--color-text);
-  margin: 0 0 0.65rem 0;
+  margin: 0 0 0.45rem 0;
   line-height: 1.25;
 }
 
 .solution-card-text {
-  font-size: clamp(0.85rem, 0.95vw, 0.925rem);
-  line-height: 1.6;
+  font-size: clamp(0.9rem, 1.05vw, 0.975rem);
+  line-height: 1.55;
   color: var(--color-muted);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.25rem 0;
   flex: 1;
 }
 
 .solution-card-action {
   margin-top: auto;
-  padding-top: 0.75rem;
+  padding-top: 0.85rem;
   border-top: 1px dashed var(--color-border);
 }
 

@@ -265,12 +265,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 8. WHY RUSAT STRENGTHS LIST + VISUAL CARD INTERACTION
+  // 8. WHY RUSAT EDITORIAL LIST + DYNAMIC SHOWCASE INTERACTION
   // --------------------------------------------------------------------------
-  const whyRows = Array.from(document.querySelectorAll(".why-custom-row"));
+  const whyRows = Array.from(document.querySelectorAll(".why-table-row, .why-custom-row"));
+  const whyDynamicImg = document.getElementById("why-dynamic-img");
+  const whyCaptionIndex = document.getElementById("why-caption-index");
+  const whyCaptionText = document.getElementById("why-caption-text");
   const whyVisualCard = document.getElementById("why-visual-card");
-  const whyPagePrev = document.querySelector(".why-page-prev");
-  const whyPageNext = document.querySelector(".why-page-next");
 
   if (whyRows.length > 0) {
     let whyActiveIndex = whyRows.findIndex((row) => row.classList.contains("is-active"));
@@ -283,20 +284,51 @@ document.addEventListener("DOMContentLoaded", () => {
       whyRows.forEach((row) => row.classList.toggle("is-active", row === targetRow));
 
       const img = targetRow.getAttribute("data-img");
+      const title = targetRow.getAttribute("data-title") || targetRow.querySelector(".why-table-title, .why-row-title")?.textContent;
+      const num = targetRow.getAttribute("data-num") || targetRow.querySelector(".why-table-num, .why-row-num")?.textContent;
+
+      if (whyDynamicImg && img) {
+        // Smooth crossfade effect
+        whyDynamicImg.classList.add("fade-out");
+        setTimeout(() => {
+          whyDynamicImg.src = img;
+          whyDynamicImg.onload = () => {
+            whyDynamicImg.classList.remove("fade-out");
+          };
+          // Fallback if already cached
+          setTimeout(() => whyDynamicImg.classList.remove("fade-out"), 50);
+        }, 120);
+      }
+
+      if (whyCaptionIndex && num) whyCaptionIndex.textContent = num;
+      if (whyCaptionText && title) whyCaptionText.textContent = title;
+
       if (whyVisualCard && img) {
         whyVisualCard.style.backgroundImage = `url('${img}')`;
       }
-      if (whyPageNext) whyPageNext.classList.toggle("is-active", whyActiveIndex < whyRows.length - 1);
-      if (whyPagePrev) whyPagePrev.classList.toggle("is-active", whyActiveIndex > 0);
     };
 
     whyRows.forEach((row, index) => {
       row.addEventListener("mouseenter", () => setActiveRow(index));
+      row.addEventListener("focus", () => setActiveRow(index));
       row.addEventListener("click", () => setActiveRow(index));
+      row.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setActiveRow(index);
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          const nextIndex = (index + 1) % whyRows.length;
+          whyRows[nextIndex].focus();
+          setActiveRow(nextIndex);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          const prevIndex = (index - 1 + whyRows.length) % whyRows.length;
+          whyRows[prevIndex].focus();
+          setActiveRow(prevIndex);
+        }
+      });
     });
-
-    if (whyPagePrev) whyPagePrev.addEventListener("click", () => setActiveRow(whyActiveIndex - 1));
-    if (whyPageNext) whyPageNext.addEventListener("click", () => setActiveRow(whyActiveIndex + 1));
   }
 
   // --------------------------------------------------------------------------
@@ -410,12 +442,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 10. SOLUTIONS EDITORIAL FILTER & SPECS DROPDOWN
+  // 10. SOLUTIONS EDITORIAL FILTER & PRODUCT SPECIFICATIONS MODAL
   // --------------------------------------------------------------------------
   const solutionFilterPills = document.querySelectorAll(".solutions-filter-pill");
   const solutionCards = document.querySelectorAll(".solution-card-item");
-  const specsDropdownToggle = document.getElementById("specs-dropdown-toggle");
-  const specsDropdownMenu = document.getElementById("specs-dropdown-menu");
 
   if (solutionFilterPills.length > 0) {
     solutionFilterPills.forEach((pill) => {
@@ -449,41 +479,175 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Specs Dropdown Handling
-  if (specsDropdownToggle && specsDropdownMenu) {
-    const toggleDropdown = (show) => {
-      const isExpanded = show !== undefined ? show : specsDropdownToggle.getAttribute("aria-expanded") !== "true";
-      specsDropdownToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-      specsDropdownMenu.classList.toggle("is-open", isExpanded);
-    };
+  // Compact Specifications Data Dictionary (Short & Image-Free)
+  const productSpecsData = {
+    "wooden-pallets": {
+      index: "01",
+      tag: "INDUSTRIAL LOGISTICS",
+      categoryKey: "wooden-pallets",
+      title: "Wooden Pallets",
+      desc: "2-way & 4-way high-racking load capacity engineered for industrial warehousing.",
+      specs: [
+        { label: "Dynamic Load", value: "1,500 – 2,500 kg (SWL)" },
+        { label: "Handling Entry", value: "2-Way & 4-Way Forklift Entry" },
+        { label: "Treatment", value: "ISPM-15 Certified Heat Treated (HT)" },
+        { label: "Standard Sizes", value: "Euro (1200×800) • Industrial (1200×1000) • Custom CAD" }
+      ]
+    },
+    "wooden-crates": {
+      index: "02",
+      tag: "INDUSTRIAL LOGISTICS",
+      categoryKey: "wooden-crates",
+      title: "Heavy-Duty Crates",
+      desc: "Fully enclosed, heavy equipment export crates designed for overseas transport.",
+      specs: [
+        { label: "Payload Capacity", value: "Up to 15+ Tonnes Heavy Cargo" },
+        { label: "Framing System", value: "Structural Timber with Diagonal Sway Bracing" },
+        { label: "Handling Interface", value: "4-Way Skids & Crane Sling Lifting Channels" },
+        { label: "Export Standard", value: "ISPM-15 Certified Phytosanitary Pass" }
+      ]
+    },
+    "wooden-boxes": {
+      index: "03",
+      tag: "EXPORT & CUSTOM",
+      categoryKey: "wooden-boxes",
+      title: "Timber Boxes",
+      desc: "Bolted timber & steel-bracketed containment engineered for maximum durability.",
+      specs: [
+        { label: "Enclosure Type", value: "Solid Timber with Steel-Bolted Brackets" },
+        { label: "Protection Barrier", value: "Dust & Moisture Sealed (VCI Liner Compatible)" },
+        { label: "Precision Sizing", value: "Custom CAD Millimeter Tolerances (±1mm)" },
+        { label: "Compliance", value: "ISPM-15 Heat Treated for Global Export" }
+      ]
+    },
+    "nailless-plywood": {
+      index: "04",
+      tag: "EXPORT & CUSTOM",
+      categoryKey: "nailless-plywood",
+      title: "Nail-Less Plywood",
+      desc: "Steel-tongue modular system, collapsible and space-efficient for global logistics.",
+      specs: [
+        { label: "Locking System", value: "Pre-bent Steel-Tongue Modular Tabs" },
+        { label: "Assembly Speed", value: "< 2 Minutes Fast Tool-Free Assembly" },
+        { label: "Storage Saving", value: "100% Flat-Pack (-80% Warehouse Volume)" },
+        { label: "Material Grade", value: "High-Density Engineered Birch Plywood" }
+      ]
+    }
+  };
 
-    specsDropdownToggle.addEventListener("click", (e) => {
+  // Product Specs Modal Elements & Handlers
+  const specsModal = document.getElementById("product-specs-modal");
+  const specsModalCloseBtn = document.getElementById("specs-modal-close-btn");
+  const specsModalBackdrop = document.getElementById("specs-modal-backdrop");
+  const specsModalIndex = document.getElementById("specs-modal-index");
+  const specsModalTag = document.getElementById("specs-modal-tag");
+  const specsModalTitle = document.getElementById("specs-modal-title");
+  const specsModalDesc = document.getElementById("specs-modal-desc");
+  const specsModalGrid = document.getElementById("specs-modal-grid");
+  const specsModalQuoteBtn = document.getElementById("specs-modal-quote-btn");
+  const specsModalConfigBtn = document.getElementById("specs-modal-config-btn");
+
+  let activeProductKey = "wooden-pallets";
+
+  const openProductSpecsModal = (productKey) => {
+    const data = productSpecsData[productKey] || productSpecsData["wooden-pallets"];
+    activeProductKey = productKey;
+
+    if (specsModalIndex) specsModalIndex.textContent = data.index;
+    if (specsModalTag) specsModalTag.textContent = data.tag;
+    if (specsModalTitle) specsModalTitle.textContent = data.title;
+    if (specsModalDesc) specsModalDesc.textContent = data.desc;
+
+    // Render Compact Key-Value Rows
+    if (specsModalGrid) {
+      specsModalGrid.innerHTML = data.specs
+        .map(
+          (item) => `
+          <div class="specs-row-item">
+            <span class="specs-row-label">${item.label}</span>
+            <span class="specs-row-val">${item.value}</span>
+          </div>`
+        )
+        .join("");
+    }
+
+    // Open Modal
+    if (specsModal) {
+      specsModal.classList.add("open");
+      specsModal.setAttribute("aria-hidden", "false");
+      specsModal.scrollTop = 0;
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  const closeProductSpecsModal = () => {
+    if (specsModal) {
+      specsModal.classList.remove("open");
+      specsModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+  };
+
+  // Attach click events to all open-specs-btn triggers
+  const openSpecsButtons = document.querySelectorAll(".open-specs-btn");
+  openSpecsButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      toggleDropdown();
+      const productKey = btn.getAttribute("data-product") || "wooden-pallets";
+      openProductSpecsModal(productKey);
     });
-
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!specsDropdownToggle.contains(e.target) && !specsDropdownMenu.contains(e.target)) {
-        toggleDropdown(false);
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const productKey = btn.getAttribute("data-product") || "wooden-pallets";
+        openProductSpecsModal(productKey);
       }
     });
+  });
 
-    // Close on Escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && specsDropdownMenu.classList.contains("is-open")) {
-        toggleDropdown(false);
-      }
-    });
+  if (specsModalCloseBtn) specsModalCloseBtn.addEventListener("click", closeProductSpecsModal);
+  if (specsModalBackdrop) specsModalBackdrop.addEventListener("click", closeProductSpecsModal);
 
-    // Close dropdown when an item inside is clicked
-    const dropdownItems = specsDropdownMenu.querySelectorAll(".dropdown-item");
-    dropdownItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        toggleDropdown(false);
-      });
+  // Quote button inside specs modal
+  if (specsModalQuoteBtn) {
+    specsModalQuoteBtn.addEventListener("click", () => {
+      closeProductSpecsModal();
+      const categoryKey = productSpecsData[activeProductKey]?.categoryKey || activeProductKey;
+      openQuoteModal(categoryKey);
     });
   }
+
+  // Configurator button inside specs modal
+  if (specsModalConfigBtn) {
+    specsModalConfigBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeProductSpecsModal();
+
+      const targetElement = document.getElementById("custom-packaging") || document.getElementById("packaging-configurator-root");
+      if (targetElement) {
+        const headerEl = document.getElementById("site-header");
+        const headerHeight = headerEl ? headerEl.offsetHeight : 70;
+        const targetPosition =
+          targetElement.getBoundingClientRect().top +
+          window.scrollY -
+          (headerHeight + 16);
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
+
+        history.pushState(null, "", "#custom-packaging");
+      }
+    });
+  }
+
+  // Escape key handling for specs modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && specsModal && specsModal.classList.contains("open")) {
+      closeProductSpecsModal();
+    }
+  });
 
   // --------------------------------------------------------------------------
   // 11. CUSTOM PACKAGING CONFIGURATOR & ENGINEERING BRIEF GENERATOR

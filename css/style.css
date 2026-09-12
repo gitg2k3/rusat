@@ -1116,62 +1116,32 @@ h1, h2, h3, h4, h5, h6 {
   grid-row: 2;
 }
 
-/* 7. Center Card Showcase (Matching Center Hero) */
+/* 7. Center Card Showcase (Hovered Image Only) */
 .bento-card-center {
   grid-column: 2 / span 2;
   grid-row: 2;
   background: #FFFFFF;
-  border-radius: 22px;
-  padding: 1.5rem;
+  border-radius: 20px;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  overflow: hidden;
   cursor: default;
-  box-shadow: 0 16px 40px rgba(22, 21, 19, 0.05);
+  box-shadow: 0 4px 16px rgba(22, 21, 19, 0.03);
+  min-height: 220px;
 }
 
-.center-card-header {
-  text-align: center;
-}
-
-.center-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background-color: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  padding: 3px 12px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #475569;
-  margin-bottom: 0.5rem;
-}
-
-.center-main-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--color-text);
-  margin-bottom: 0.5rem;
-}
-
-.center-card-media-wrapper {
-  position: relative;
-  width: 100%;
-  margin: 0.25rem 0;
+.bento-card-center:hover {
+  transform: none;
+  border-color: var(--color-border);
+  box-shadow: 0 4px 16px rgba(22, 21, 19, 0.03);
 }
 
 .center-image-frame {
   position: relative;
   width: 100%;
-  height: 165px;
-  border-radius: 12px;
+  height: 100%;
+  min-height: 100%;
   overflow: hidden;
-  border: 1px solid #E2E8F0;
   background-color: var(--color-surface-subtle);
 }
 
@@ -1186,49 +1156,6 @@ h1, h2, h3, h4, h5, h6 {
 .center-dynamic-img.updating {
   opacity: 0.3;
   transform: scale(1.03);
-}
-
-.center-image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(22, 21, 19, 0.02) 0%, rgba(22, 21, 19, 0.6) 100%);
-  pointer-events: none;
-}
-
-.center-image-caption {
-  position: absolute;
-  bottom: 10px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 2;
-}
-
-.img-live-tag {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  background-color: rgba(216, 88, 43, 0.9);
-  padding: 2px 7px;
-  border-radius: 4px;
-}
-
-.img-type-label {
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.center-main-desc {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-muted);
-  text-align: center;
 }
 
 /* 8. Bottom-Left: Export Packaging Requirements */
@@ -1265,222 +1192,10 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
 }
 
+
 /* ==========================================================================
-   CENTER HERO SHOWCASE CARD (THE FOCAL POINT WITH DYNAMIC IMAGE PREVIEW)
+   BENTO GRID RESPONSIVE BREAKPOINTS
    ========================================================================== */
-.bento-card-center-hero {
-  grid-column: 2 / span 2;
-  grid-row: 2;
-  background: #FFFFFF;
-  border: 1.5px solid var(--color-border);
-  padding: 1.75rem;
-  border-radius: 24px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(22, 21, 19, 0.06);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: default;
-}
-
-.bento-card-center-hero:hover {
-  transform: none;
-  box-shadow: 0 20px 48px rgba(22, 21, 19, 0.08);
-  border-color: rgba(216, 88, 43, 0.3);
-}
-
-.center-hero-backdrop-glow {
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 280px;
-  height: 140px;
-  background: radial-gradient(ellipse at center, rgba(216, 88, 43, 0.12) 0%, rgba(59, 130, 246, 0.08) 50%, transparent 80%);
-  pointer-events: none;
-  border-radius: 50%;
-}
-
-.center-hero-split-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.center-hero-header {
-  position: relative;
-  z-index: 1;
-}
-
-.center-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background-color: var(--color-surface-subtle);
-  border: 1px solid var(--color-border);
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--color-text);
-  margin-bottom: 0.6rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-}
-
-.center-hero-badge .badge-icon {
-  font-size: 0.8rem;
-}
-
-.center-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2vw, 1.65rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--color-text);
-  margin-bottom: 0.45rem;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.center-hero-desc {
-  font-size: 0.9rem;
-  line-height: 1.55;
-  color: var(--color-text-secondary);
-  transition: opacity 0.25s ease;
-}
-
-/* Center Media Showcase Frame with Dynamic Image */
-.center-hero-media-wrapper {
-  position: relative;
-  z-index: 1;
-  margin: 0.25rem 0;
-}
-
-.center-image-frame {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-surface-muted);
-}
-
-.center-dynamic-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: scale(1);
-}
-
-.center-dynamic-img.updating {
-  opacity: 0.3;
-  transform: scale(1.04);
-}
-
-.center-image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(22, 21, 19, 0.05) 0%, rgba(22, 21, 19, 0.65) 100%);
-  pointer-events: none;
-}
-
-.center-image-caption {
-  position: absolute;
-  bottom: 12px;
-  left: 14px;
-  right: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 2;
-}
-
-.img-live-tag {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #FFFFFF;
-  background-color: rgba(216, 88, 43, 0.9);
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.img-type-label {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-}
-
-/* Bottom Specs & Action Bar */
-.center-hero-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-border-subtle);
-  position: relative;
-  z-index: 1;
-}
-
-.center-specs-chips {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.spec-chip {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.spec-chip-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--color-muted);
-}
-
-.spec-chip-val {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--color-text);
-}
-
-.center-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.15rem;
-  background-color: var(--color-text);
-  color: #FFFFFF;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 0.82rem;
-  font-weight: 700;
-  border: none;
-  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-  white-space: nowrap;
-}
-
-.center-action-btn:hover {
-  background-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(216, 88, 43, 0.25);
-}
 
 /* ==========================================================================
    BENTO GRID RESPONSIVE BREAKPOINTS
@@ -1531,7 +1246,8 @@ h1, h2, h3, h4, h5, h6 {
   .bento-card-center {
     grid-column: 1;
     grid-row: auto;
-    padding: 1.25rem;
+    padding: 0;
+    min-height: 220px;
   }
 
   .bento-card-ui { grid-column: 1; grid-row: auto; }
@@ -1549,7 +1265,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .center-image-frame {
-    height: 180px;
+    height: 220px;
   }
 }
 

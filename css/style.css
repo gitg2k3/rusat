@@ -536,12 +536,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-bg-photo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 55%;
   animation: heroSlowZoom 24s ease-in-out infinite alternate;
   will-change: transform;
+  z-index: 1;
+}
+
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 2;
 }
 
 @keyframes heroSlowZoom {
@@ -553,15 +566,17 @@ h1, h2, h3, h4, h5, h6 {
 .hero-backdrop-scrim {
   position: absolute;
   inset: 0;
-  /* background:
-    linear-gradient(100deg, rgba(10, 8, 6, 0.86) 0%, rgba(12, 9, 7, 0.62) 24%, rgba(14, 11, 8, 0.22) 46%, rgba(14, 11, 8, 0) 62%),
-    linear-gradient(0deg, rgba(8, 6, 5, 0.4) 0%, rgba(8, 6, 5, 0) 30%); */
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(14, 11, 8, 0.88) 0%, rgba(14, 11, 8, 0.65) 35%, rgba(14, 11, 8, 0.2) 65%, rgba(14, 11, 8, 0.35) 100%),
+    linear-gradient(0deg, rgba(10, 8, 6, 0.5) 0%, transparent 35%);
 }
 
 /* Hero Copy Block */
 .hero-content-grid {
   position: relative;
-  z-index: 2;
+  z-index: 4;
 }
 
 .hero-copy-block {
@@ -676,6 +691,9 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .hero-bg-photo {
     animation: none;
+  }
+  .hero-bg-video {
+    display: none;
   }
   .reveal-hero-up {
     opacity: 1;
@@ -4897,11 +4915,38 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.12em;
   color: rgba(255, 248, 241, 0.6);
   text-transform: uppercase;
+  flex-wrap: wrap;
 }
 
 .creed-dot {
   color: #FFC49A;
   font-size: 0.9rem;
+  user-select: none;
+}
+
+.footer-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  letter-spacing: 0.12em;
+}
+
+.footer-credit .credit-intro {
+  font-weight: 500;
+  color: rgba(255, 248, 241, 0.6);
+}
+
+.footer-credit .credit-brand {
+  color: #FFF8F1;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-credit .credit-brand:hover {
+  color: #FFC49A;
 }
 
 /* ==========================================================================

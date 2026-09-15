@@ -23,6 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
   handleHeaderScroll(); // Initialize on page load
 
   // --------------------------------------------------------------------------
+  // HERO BACKGROUND VIDEO INITIALIZATION
+  // --------------------------------------------------------------------------
+  const heroVideo = document.querySelector(".hero-bg-video");
+  if (heroVideo) {
+    heroVideo.muted = true;
+    const playPromise = heroVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay policy or low power mode prevented playback
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // 2. MOBILE DRAWER NAVIGATION
   // --------------------------------------------------------------------------
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");

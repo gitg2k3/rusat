@@ -148,6 +148,73 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
+  // 5.1 EDITORIAL INTRO STAT COUNTERS ANIMATION
+  // --------------------------------------------------------------------------
+  const statValueEls = document.querySelectorAll(".editorial-stat-value");
+  if (statValueEls.length > 0 && "IntersectionObserver" in window) {
+    let animated = false;
+    const animateStats = () => {
+      if (animated) return;
+      animated = true;
+
+      statValueEls.forEach((el) => {
+        const rawTarget = parseFloat(
+          el.getAttribute("data-val") || el.textContent.replace(/[^0-9.]/g, ""),
+        );
+        const format = el.getAttribute("data-format") || "int";
+        const duration = 1600;
+        const startTime = performance.now();
+
+        const updateCount = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          const currentVal = easeProgress * rawTarget;
+
+          if (format === "comma") {
+            el.textContent = Math.round(currentVal).toLocaleString("en-US");
+          } else if (format === "decimal") {
+            el.textContent = currentVal.toFixed(2);
+          } else {
+            el.textContent = Math.round(currentVal);
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCount);
+          } else {
+            if (format === "comma") {
+              el.textContent = Math.round(rawTarget).toLocaleString("en-US");
+            } else if (format === "decimal") {
+              el.textContent = rawTarget.toFixed(2);
+            } else {
+              el.textContent = Math.round(rawTarget);
+            }
+          }
+        };
+
+        requestAnimationFrame(updateCount);
+      });
+    };
+
+    const statsObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateStats();
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 },
+    );
+
+    const statsGrid = document.querySelector(".editorial-stats-grid");
+    if (statsGrid) {
+      statsObserver.observe(statsGrid);
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // 6. QUOTE REQUEST MODAL INTERACTION
   // --------------------------------------------------------------------------
   const quoteModal = document.getElementById("quote-modal");
@@ -237,12 +304,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // --------------------------------------------------------------------------
   // 6b. FOOTER "GET IN TOUCH" FORM SUBMISSION HANDLER
   // --------------------------------------------------------------------------
-  const footerNewsletterForm = document.getElementById("footer-newsletter-form");
+  const footerNewsletterForm = document.getElementById(
+    "footer-newsletter-form",
+  );
   if (footerNewsletterForm) {
     footerNewsletterForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const submitBtn = footerNewsletterForm.querySelector('button[type="submit"] span');
+      const submitBtn = footerNewsletterForm.querySelector(
+        'button[type="submit"] span',
+      );
       if (submitBtn) {
         const originalText = submitBtn.textContent;
         submitBtn.textContent = "Thank You ✓";
@@ -267,25 +338,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // --------------------------------------------------------------------------
   // 8. WHY RUSAT EDITORIAL LIST + DYNAMIC SHOWCASE INTERACTION
   // --------------------------------------------------------------------------
-  const whyRows = Array.from(document.querySelectorAll(".why-table-row, .why-custom-row"));
+  const whyRows = Array.from(
+    document.querySelectorAll(".why-table-row, .why-custom-row"),
+  );
   const whyDynamicImg = document.getElementById("why-dynamic-img");
   const whyCaptionIndex = document.getElementById("why-caption-index");
   const whyCaptionText = document.getElementById("why-caption-text");
   const whyVisualCard = document.getElementById("why-visual-card");
 
   if (whyRows.length > 0) {
-    let whyActiveIndex = whyRows.findIndex((row) => row.classList.contains("is-active"));
+    let whyActiveIndex = whyRows.findIndex((row) =>
+      row.classList.contains("is-active"),
+    );
     if (whyActiveIndex === -1) whyActiveIndex = 0;
 
     const setActiveRow = (index) => {
       whyActiveIndex = (index + whyRows.length) % whyRows.length;
       const targetRow = whyRows[whyActiveIndex];
 
-      whyRows.forEach((row) => row.classList.toggle("is-active", row === targetRow));
+      whyRows.forEach((row) =>
+        row.classList.toggle("is-active", row === targetRow),
+      );
 
       const img = targetRow.getAttribute("data-img");
-      const title = targetRow.getAttribute("data-title") || targetRow.querySelector(".why-table-title, .why-row-title")?.textContent;
-      const num = targetRow.getAttribute("data-num") || targetRow.querySelector(".why-table-num, .why-row-num")?.textContent;
+      const title =
+        targetRow.getAttribute("data-title") ||
+        targetRow.querySelector(".why-table-title, .why-row-title")
+          ?.textContent;
+      const num =
+        targetRow.getAttribute("data-num") ||
+        targetRow.querySelector(".why-table-num, .why-row-num")?.textContent;
 
       if (whyDynamicImg && img) {
         // Smooth crossfade effect
@@ -332,119 +414,301 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------------------------------------------------
-  // 9. BENTO CAPABILITIES DYNAMIC CENTER IMAGE SHOWCASE
+  // 9. CAPABILITIES 100VH STAGE CAROUSEL CONTROLLER (8 SPECIFICATION PILLARS)
   // --------------------------------------------------------------------------
-  const bentoCards = document.querySelectorAll("#capabilities-bento .bento-card[data-capability]");
-  const centerTitle = document.getElementById("center-title");
-  const centerDesc = document.getElementById("center-desc");
-  const centerImage = document.getElementById("center-image");
-  const centerTypeTag = document.getElementById("center-type-tag");
-  const centerTypeLabel = document.getElementById("center-type-label");
-
-  const capabilitiesData = {
-    "dim-weight": {
-      title: "Product Dimensions & Weight",
-      desc: "Custom sized and engineered to match exact payload dimensions, weight distribution, and centre of gravity.",
+  const capabilitiesList = [
+    {
+      id: "dim-weight",
       tag: "SPECIFICATION CRITERIA • 01",
-      typeLabel: "Bespoke Dimensioning",
-      img: "assets/images/custom-packaging.jpg"
+      title: "Custom Sized to Exact Payloads",
+      quote: "Engineered to the millimeter around payload geometry and center of gravity to eliminate transit shifting.",
+      badge: "CAD/CAM Precision",
+      sub: "Zero-Shift Base • Static & Dynamic Balance",
+      img: "assets/images/custom-packaging.jpg",
+      alt: "Custom sized timber packaging engineered for exact industrial payloads"
     },
-    "transport-conditions": {
-      title: "Transportation Conditions",
-      desc: "Shock-absorbing framing and vibration-resistant construction built for road, rail, air, and ocean voyages.",
+    {
+      id: "transport-conditions",
       tag: "SPECIFICATION CRITERIA • 02",
-      typeLabel: "Multi-Modal Transport",
-      img: "assets/images/crates.jpg"
+      title: "Multi-Modal Shock & Vibration Transit",
+      quote: "Damped framing built to absorb severe shock profiles across road, rail, sea container, and air cargo.",
+      badge: "Intermodal Shield",
+      sub: "Vibration-Damped Heavy Timber Framing",
+      img: "assets/images/crates.jpg",
+      alt: "Heavy duty wooden crates for multi-modal freight transport"
     },
-    "stacking-storage": {
-      title: "Stacking & Storage Needs",
-      desc: "Engineered for vertical warehouse racking, multi-tier container stacking, and long-term storage stability.",
+    {
+      id: "stacking-storage",
       tag: "SPECIFICATION CRITERIA • 03",
-      typeLabel: "Heavy-Duty Stacking Skids",
-      img: "assets/images/pallets.jpg"
+      title: "High-Density Vertical Stacking Skids",
+      quote: "Engineered for multi-tier warehouse racking and container double-stacking without structural deflection.",
+      badge: "Vertical Rigidity",
+      sub: "Multi-Tier Heavy Pallet Systems",
+      img: "assets/images/pallets.jpg",
+      alt: "Industrial wooden pallets built for vertical warehouse stacking"
     },
-    "load-bearing": {
-      title: "Load-Bearing Requirements",
-      desc: "Structural load calculations designed to maintain integrity under both static warehouse storage and dynamic transit stresses.",
+    {
+      id: "load-bearing",
       tag: "SPECIFICATION CRITERIA • 04",
-      typeLabel: "Static & Dynamic Structural Rigidity",
-      img: "assets/images/manufacturing.jpg"
+      title: "50+ Ton Dynamic & Static Integrity",
+      quote: "FEA-tested structural calculations ensuring absolute integrity under severe static loads and dynamic shipping strains.",
+      badge: "50T Dynamic Rating",
+      sub: "Certified High-Capacity Load Tolerance",
+      img: "assets/images/manufacturing.jpg",
+      alt: "Heavy load timber structures engineered for massive machinery payloads"
     },
-    "reusability-efficiency": {
-      title: "Reusability & Storage Efficiency",
-      desc: "Modular, knock-down, and collapsible timber designs that minimize return logistics volume and enable repeated deployments.",
+    {
+      id: "reusability-efficiency",
       tag: "SPECIFICATION CRITERIA • 05",
-      typeLabel: "Collapsible Timber Systems",
-      img: "assets/images/nailless-plywood.jpg"
+      title: "Space-Saving Collapsible Assembly",
+      quote: "Fold-flat knock-down architecture reducing return logistics volume by up to 75% for closed loops.",
+      badge: "Nailless Plywood",
+      sub: "75% Return Logistics Volume Reduction",
+      img: "assets/images/nailless-plywood.jpg",
+      alt: "Nailless collapsible plywood boxes for reusable closed-loop transit"
     },
-    "forklift-handling": {
-      title: "Forklift & Handling Conditions",
-      desc: "Configured for 2-way and 4-way entry, pallet jack accessibility, crane slinging, and secure forklift transport.",
+    {
+      id: "forklift-handling",
       tag: "SPECIFICATION CRITERIA • 06",
-      typeLabel: "2-Way & 4-Way Rigging Interface",
-      img: "assets/images/boxes.jpg"
+      title: "4-Way Rigging & Crane Sling Interface",
+      quote: "Beveled skids and reinforced pick points for universal 2-way/4-way forklifts and overhead crane hoists.",
+      badge: "Universal Handling",
+      sub: "2-Way & 4-Way Entry • Overhead Crane Rated",
+      img: "assets/images/boxes.jpg",
+      alt: "Timber export boxes configured for forklift and crane handling"
     },
-    "export-packaging": {
-      title: "Export Packaging Requirements",
-      desc: "Constructed in compliance with international freight mandates, with applicable ISPM-15 treatment options where required.",
+    {
+      id: "export-packaging",
       tag: "SPECIFICATION CRITERIA • 07",
-      typeLabel: "Certified ISPM-15 Export Crates",
-      img: "assets/images/export-packaging.jpg"
+      title: "Certified ISPM-15 Phytosanitary Clearance",
+      quote: "Heat-treated kiln timber with IPPC stamps ensuring frictionless customs clearance across 180+ countries.",
+      badge: "ISPM-15 HT Certified",
+      sub: "Global Phytosanitary Customs Clearance",
+      img: "assets/images/export-packaging.jpg",
+      alt: "IPPC heat-treated ISPM-15 certified wooden boxes for export"
     },
-    "customer-designs": {
-      title: "Customer-Specific Designs",
-      desc: "Dedicated packaging engineering customized around high-value machinery, electrical goods, and sensitive components.",
+    {
+      id: "customer-designs",
       tag: "SPECIFICATION CRITERIA • 08",
-      typeLabel: "Engineered Bespoke Packaging",
-      img: "assets/images/custom_packaging_showcase_1789026035507.jpg"
+      title: "Custom CNC Interiors & Barrier Protection",
+      quote: "Engineered foam inserts, desiccant cradles, and anti-corrosion barrier foil tailored to sensitive equipment.",
+      badge: "CNC Custom Inserts",
+      sub: "Moisture-Proof & Sensitive Component Barrier",
+      img: "assets/images/hero.jpg",
+      alt: "Precision engineered custom packaging with protective interior cradles"
+    }
+  ];
+
+  let currentCapIndex = 0;
+  const totalCaps = capabilitiesList.length;
+
+  const capSpecTag = document.getElementById("cap-card-spec-tag");
+  const capTitle = document.getElementById("cap-card-title");
+  const capDesc = document.getElementById("cap-card-desc");
+  const capBadge = document.getElementById("cap-card-badge");
+  const capSub = document.getElementById("cap-card-sub");
+  const capImg = document.getElementById("cap-card-img");
+  const capCardContent = document.querySelector(".cap-card-content");
+
+  const pillLeftOuter = document.getElementById("cap-pill-left-outer");
+  const pillLeftInner = document.getElementById("cap-pill-left-inner");
+  const pillRightInner = document.getElementById("cap-pill-right-inner");
+  const pillRightOuter = document.getElementById("cap-pill-right-outer");
+
+  const capPrevBtn = document.getElementById("cap-prev-btn");
+  const capNextBtn = document.getElementById("cap-next-btn");
+  const capDotsContainer = document.getElementById("cap-dots-container");
+
+  const getWrappedIndex = (index) => {
+    return ((index % totalCaps) + totalCaps) % totalCaps;
+  };
+
+  // Auto-scroll controller declaration
+  let capAutoScrollTimer = null;
+  const CAP_AUTO_SCROLL_INTERVAL = 3000;
+
+  const startCapAutoScroll = () => {
+    stopCapAutoScroll();
+    capAutoScrollTimer = setInterval(() => {
+      goToCapSlide(currentCapIndex + 1);
+    }, CAP_AUTO_SCROLL_INTERVAL);
+  };
+
+  const stopCapAutoScroll = () => {
+    if (capAutoScrollTimer) {
+      clearInterval(capAutoScrollTimer);
+      capAutoScrollTimer = null;
     }
   };
 
-  const updateBentoCenterShowcase = (capKey) => {
-    const data = capabilitiesData[capKey];
-    if (!data) return;
-
-    // Set active card
-    bentoCards.forEach((card) => {
-      const isMatch = card.getAttribute("data-capability") === capKey;
-      card.classList.toggle("is-active", isMatch);
-    });
-
-    // Update text
-    if (centerTitle) centerTitle.textContent = data.title;
-    if (centerDesc) centerDesc.textContent = data.desc;
-    if (centerTypeTag) centerTypeTag.textContent = data.tag;
-    if (centerTypeLabel) centerTypeLabel.textContent = data.typeLabel;
-
-    // Update image with smooth transition
-    if (centerImage) {
-      centerImage.classList.add("updating");
-      setTimeout(() => {
-        centerImage.src = data.img;
-        centerImage.alt = `${data.title} preview`;
-        centerImage.classList.remove("updating");
-      }, 140);
-    }
+  const resetAutoScroll = () => {
+    stopCapAutoScroll();
+    startCapAutoScroll();
   };
 
-  if (bentoCards.length > 0) {
-    bentoCards.forEach((card) => {
-      const capKey = card.getAttribute("data-capability");
-      card.addEventListener("mouseenter", () => updateBentoCenterShowcase(capKey));
-      card.addEventListener("click", () => updateBentoCenterShowcase(capKey));
-      card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          updateBentoCenterShowcase(capKey);
-        }
+  // Build Pagination Dots
+  if (capDotsContainer) {
+    capDotsContainer.innerHTML = "";
+    capabilitiesList.forEach((item, idx) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = `cap-dot-node ${idx === 0 ? "is-active" : ""}`;
+      dot.setAttribute("role", "tab");
+      dot.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+      dot.setAttribute("aria-label", `Slide ${idx + 1}: ${item.title}`);
+      dot.addEventListener("click", () => {
+        goToCapSlide(idx);
+        resetAutoScroll();
       });
+      capDotsContainer.appendChild(dot);
     });
   }
+
+  const updateSatellitePill = (btnEl, targetIndex, labelPrefix) => {
+    if (!btnEl) return;
+    const item = capabilitiesList[targetIndex];
+    const imgEl = btnEl.querySelector(".cap-pill-img");
+    if (imgEl) {
+      imgEl.src = item.img;
+      imgEl.alt = item.title;
+    }
+    btnEl.setAttribute("aria-label", `${labelPrefix}: ${item.title}`);
+    btnEl.onclick = () => {
+      goToCapSlide(targetIndex);
+      resetAutoScroll();
+    };
+  };
+
+  const goToCapSlide = (index) => {
+    currentCapIndex = getWrappedIndex(index);
+    const activeItem = capabilitiesList[currentCapIndex];
+
+    // Smooth fade transition on active center card
+    if (capCardContent) capCardContent.classList.add("is-fading");
+    if (capImg) capImg.classList.add("is-fading");
+
+    setTimeout(() => {
+      // Update text
+      if (capSpecTag) capSpecTag.textContent = activeItem.tag;
+      if (capTitle) capTitle.textContent = activeItem.title;
+      if (capDesc) capDesc.textContent = activeItem.quote;
+      if (capBadge) capBadge.textContent = activeItem.badge;
+      if (capSub) capSub.textContent = activeItem.sub;
+
+      // Update image
+      if (capImg) {
+        capImg.src = activeItem.img;
+        capImg.alt = activeItem.alt;
+      }
+
+      if (capCardContent) capCardContent.classList.remove("is-fading");
+      if (capImg) capImg.classList.remove("is-fading");
+    }, 120);
+
+    // Update satellites (-2, -1, +1, +2)
+    const idxLeftOuter = getWrappedIndex(currentCapIndex - 2);
+    const idxLeftInner = getWrappedIndex(currentCapIndex - 1);
+    const idxRightInner = getWrappedIndex(currentCapIndex + 1);
+    const idxRightOuter = getWrappedIndex(currentCapIndex + 2);
+
+    updateSatellitePill(pillLeftOuter, idxLeftOuter, "Previous capability (2 steps back)");
+    updateSatellitePill(pillLeftInner, idxLeftInner, "Previous capability");
+    updateSatellitePill(pillRightInner, idxRightInner, "Next capability");
+    updateSatellitePill(pillRightOuter, idxRightOuter, "Next capability (2 steps ahead)");
+
+    // Update Pagination Dots
+    if (capDotsContainer) {
+      const dots = capDotsContainer.querySelectorAll(".cap-dot-node");
+      dots.forEach((dot, dIdx) => {
+        const isActive = dIdx === currentCapIndex;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+    }
+  };
+
+  if (capPrevBtn) {
+    capPrevBtn.addEventListener("click", () => {
+      goToCapSlide(currentCapIndex - 1);
+    });
+  }
+
+  if (capNextBtn) {
+    capNextBtn.addEventListener("click", () => {
+      goToCapSlide(currentCapIndex + 1);
+    });
+  }
+
+  // Initial Satellite Sync
+  if (pillLeftOuter || pillLeftInner || pillRightInner || pillRightOuter) {
+    goToCapSlide(0);
+  }
+
+  // Keyboard navigation when stage is in view / focused
+  const capSection = document.getElementById("capabilities");
+  if (capSection) {
+    capSection.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goToCapSlide(currentCapIndex - 1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goToCapSlide(currentCapIndex + 1);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    capSection.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    capSection.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        goToCapSlide(currentCapIndex + 1); // swipe left -> next
+        resetAutoScroll();
+      } else if (touchEndX - touchStartX > 50) {
+        goToCapSlide(currentCapIndex - 1); // swipe right -> prev
+        resetAutoScroll();
+      }
+    }, { passive: true });
+  }
+
+  // Start auto scroll
+  startCapAutoScroll();
+
+  // Reset timer on user button clicks
+  if (capPrevBtn) {
+    capPrevBtn.addEventListener("click", resetAutoScroll);
+  }
+  if (capNextBtn) {
+    capNextBtn.addEventListener("click", resetAutoScroll);
+  }
+
+  // Pause when hovering over the active showcase card
+  const activeCard = document.getElementById("cap-active-card");
+  if (activeCard) {
+    activeCard.addEventListener("mouseenter", stopCapAutoScroll);
+    activeCard.addEventListener("mouseleave", startCapAutoScroll);
+  }
+
+  // Pause when browser tab is inactive
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopCapAutoScroll();
+    } else {
+      startCapAutoScroll();
+    }
+  });
 
   // --------------------------------------------------------------------------
   // 10. SOLUTIONS EDITORIAL FILTER & PRODUCT SPECIFICATIONS MODAL
   // --------------------------------------------------------------------------
-  const solutionFilterPills = document.querySelectorAll(".solutions-filter-pill");
+  const solutionFilterPills = document.querySelectorAll(
+    ".solutions-filter-pill",
+  );
   const solutionCards = document.querySelectorAll(".solution-card-item");
 
   if (solutionFilterPills.length > 0) {
@@ -459,6 +723,12 @@ document.addEventListener("DOMContentLoaded", () => {
           p.setAttribute("aria-selected", isActive ? "true" : "false");
         });
 
+        // Reset any flipped cards when filter changes
+        solutionCards.forEach((c) => {
+          c.classList.remove("is-flipped");
+          c.setAttribute("aria-expanded", "false");
+        });
+
         // Filter cards
         solutionCards.forEach((card) => {
           const cardCategory = card.getAttribute("data-category");
@@ -467,7 +737,8 @@ document.addEventListener("DOMContentLoaded", () => {
             card.style.opacity = "0";
             card.style.transform = "translateY(12px)";
             requestAnimationFrame(() => {
-              card.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+              card.style.transition =
+                "opacity 0.35s ease, transform 0.35s ease";
               card.style.opacity = "1";
               card.style.transform = "translateY(0)";
             });
@@ -478,6 +749,32 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // --------------------------------------------------------------------------
+  // 10.1 SOLUTIONS HOVER REVEAL & SPECIFICATIONS TRIGGER
+  // --------------------------------------------------------------------------
+  solutionCards.forEach((card) => {
+    // Action link on back face opens quote modal with the corresponding product
+    const actionLink = card.querySelector(".solution-back-action-link, .solution-back-quote-btn");
+    if (actionLink) {
+      actionLink.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const productKey =
+          actionLink.getAttribute("data-quote-category") ||
+          card.getAttribute("data-product") ||
+          "wooden-pallets";
+        openQuoteModal(productKey);
+      });
+    }
+
+    // Touch support for devices without hover capability
+    if (window.matchMedia("(hover: none)").matches) {
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".solution-back-action-link")) return;
+        card.classList.toggle("is-flipped");
+      });
+    }
+  });
 
   // Compact Specifications Data Dictionary (Short & Image-Free)
   const productSpecsData = {
@@ -491,8 +788,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { label: "Dynamic Load", value: "1,500 – 2,500 kg (SWL)" },
         { label: "Handling Entry", value: "2-Way & 4-Way Forklift Entry" },
         { label: "Treatment", value: "ISPM-15 Certified Heat Treated (HT)" },
-        { label: "Standard Sizes", value: "Euro (1200×800) • Industrial (1200×1000) • Custom CAD" }
-      ]
+        {
+          label: "Standard Sizes",
+          value: "Euro (1200×800) • Industrial (1200×1000) • Custom CAD",
+        },
+      ],
     },
     "wooden-crates": {
       index: "02",
@@ -502,10 +802,19 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: "Fully enclosed, heavy equipment export crates designed for overseas transport.",
       specs: [
         { label: "Payload Capacity", value: "Up to 15+ Tonnes Heavy Cargo" },
-        { label: "Framing System", value: "Structural Timber with Diagonal Sway Bracing" },
-        { label: "Handling Interface", value: "4-Way Skids & Crane Sling Lifting Channels" },
-        { label: "Export Standard", value: "ISPM-15 Certified Phytosanitary Pass" }
-      ]
+        {
+          label: "Framing System",
+          value: "Structural Timber with Diagonal Sway Bracing",
+        },
+        {
+          label: "Handling Interface",
+          value: "4-Way Skids & Crane Sling Lifting Channels",
+        },
+        {
+          label: "Export Standard",
+          value: "ISPM-15 Certified Phytosanitary Pass",
+        },
+      ],
     },
     "wooden-boxes": {
       index: "03",
@@ -514,11 +823,23 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Timber Boxes",
       desc: "Bolted timber & steel-bracketed containment engineered for maximum durability.",
       specs: [
-        { label: "Enclosure Type", value: "Solid Timber with Steel-Bolted Brackets" },
-        { label: "Protection Barrier", value: "Dust & Moisture Sealed (VCI Liner Compatible)" },
-        { label: "Precision Sizing", value: "Custom CAD Millimeter Tolerances (±1mm)" },
-        { label: "Compliance", value: "ISPM-15 Heat Treated for Global Export" }
-      ]
+        {
+          label: "Enclosure Type",
+          value: "Solid Timber with Steel-Bolted Brackets",
+        },
+        {
+          label: "Protection Barrier",
+          value: "Dust & Moisture Sealed (VCI Liner Compatible)",
+        },
+        {
+          label: "Precision Sizing",
+          value: "Custom CAD Millimeter Tolerances (±1mm)",
+        },
+        {
+          label: "Compliance",
+          value: "ISPM-15 Heat Treated for Global Export",
+        },
+      ],
     },
     "nailless-plywood": {
       index: "04",
@@ -527,12 +848,24 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Nail-Less Plywood",
       desc: "Steel-tongue modular system, collapsible and space-efficient for global logistics.",
       specs: [
-        { label: "Locking System", value: "Pre-bent Steel-Tongue Modular Tabs" },
-        { label: "Assembly Speed", value: "< 2 Minutes Fast Tool-Free Assembly" },
-        { label: "Storage Saving", value: "100% Flat-Pack (-80% Warehouse Volume)" },
-        { label: "Material Grade", value: "High-Density Engineered Birch Plywood" }
-      ]
-    }
+        {
+          label: "Locking System",
+          value: "Pre-bent Steel-Tongue Modular Tabs",
+        },
+        {
+          label: "Assembly Speed",
+          value: "< 2 Minutes Fast Tool-Free Assembly",
+        },
+        {
+          label: "Storage Saving",
+          value: "100% Flat-Pack (-80% Warehouse Volume)",
+        },
+        {
+          label: "Material Grade",
+          value: "High-Density Engineered Birch Plywood",
+        },
+      ],
+    },
   };
 
   // Product Specs Modal Elements & Handlers
@@ -550,7 +883,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeProductKey = "wooden-pallets";
 
   const openProductSpecsModal = (productKey) => {
-    const data = productSpecsData[productKey] || productSpecsData["wooden-pallets"];
+    const data =
+      productSpecsData[productKey] || productSpecsData["wooden-pallets"];
     activeProductKey = productKey;
 
     if (specsModalIndex) specsModalIndex.textContent = data.index;
@@ -566,7 +900,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="specs-row-item">
             <span class="specs-row-label">${item.label}</span>
             <span class="specs-row-val">${item.value}</span>
-          </div>`
+          </div>`,
         )
         .join("");
     }
@@ -605,14 +939,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (specsModalCloseBtn) specsModalCloseBtn.addEventListener("click", closeProductSpecsModal);
-  if (specsModalBackdrop) specsModalBackdrop.addEventListener("click", closeProductSpecsModal);
+  if (specsModalCloseBtn)
+    specsModalCloseBtn.addEventListener("click", closeProductSpecsModal);
+  if (specsModalBackdrop)
+    specsModalBackdrop.addEventListener("click", closeProductSpecsModal);
 
   // Quote button inside specs modal
   if (specsModalQuoteBtn) {
     specsModalQuoteBtn.addEventListener("click", () => {
       closeProductSpecsModal();
-      const categoryKey = productSpecsData[activeProductKey]?.categoryKey || activeProductKey;
+      const categoryKey =
+        productSpecsData[activeProductKey]?.categoryKey || activeProductKey;
       openQuoteModal(categoryKey);
     });
   }
@@ -623,7 +960,9 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       closeProductSpecsModal();
 
-      const targetElement = document.getElementById("custom-packaging") || document.getElementById("packaging-configurator-root");
+      const targetElement =
+        document.getElementById("custom-packaging") ||
+        document.getElementById("packaging-configurator-root");
       if (targetElement) {
         const headerEl = document.getElementById("site-header");
         const headerHeight = headerEl ? headerEl.offsetHeight : 70;
@@ -644,7 +983,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Escape key handling for specs modal
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && specsModal && specsModal.classList.contains("open")) {
+    if (
+      e.key === "Escape" &&
+      specsModal &&
+      specsModal.classList.contains("open")
+    ) {
       closeProductSpecsModal();
     }
   });
@@ -652,7 +995,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // --------------------------------------------------------------------------
   // 11. CUSTOM PACKAGING CONFIGURATOR & ENGINEERING BRIEF GENERATOR
   // --------------------------------------------------------------------------
-  const configuratorRoot = document.getElementById("packaging-configurator-root");
+  const configuratorRoot = document.getElementById(
+    "packaging-configurator-root",
+  );
 
   if (configuratorRoot) {
     // Configurator State Model
@@ -679,7 +1024,7 @@ document.addEventListener("DOMContentLoaded", () => {
       contactEmail: "",
       contactPhone: "",
       contactNotes: "",
-      referenceCode: ""
+      referenceCode: "",
     };
 
     const stepTitles = {
@@ -689,14 +1034,15 @@ document.addEventListener("DOMContentLoaded", () => {
       4: "HANDLING & TRANSPORT",
       5: "REQUIREMENTS",
       6: "CONTACT DETAILS",
-      7: "REVIEW REQUIREMENTS"
+      7: "REVIEW REQUIREMENTS",
     };
 
     // DOM Elements
     const form = document.getElementById("custom-configurator-form");
     const stepPanes = configuratorRoot.querySelectorAll(".config-step-pane");
     const trackNodes = configuratorRoot.querySelectorAll(".step-track-node");
-    const trackConnectors = configuratorRoot.querySelectorAll(".track-connector");
+    const trackConnectors =
+      configuratorRoot.querySelectorAll(".track-connector");
     const stepCounterEl = document.getElementById("config-step-counter");
     const stepNameEl = document.getElementById("config-step-name");
     const btnBack = document.getElementById("btn-step-back");
@@ -727,12 +1073,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Product Category Subtitle map
     const productSubtitles = {
-      "Machinery": "Industrial machinery and equipment",
+      Machinery: "Industrial machinery and equipment",
       "Electrical / Electronics": "Electrical and electronic components",
-      "Automotive": "Automotive components and assemblies",
+      Automotive: "Automotive components and assemblies",
       "Engineering Products": "Engineering products and industrial parts",
       "Battery / Energy": "Battery-industry and energy-related products",
-      "Other Industrial": "Other industrial commercial products"
+      "Other Industrial": "Other industrial commercial products",
     };
 
     const packagingSubtitles = {
@@ -741,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "Wooden Box": "Solid timber enclosed containment",
       "Nail-Less Plywood Box": "Steel-tongue modular interlock casing",
       "Foldable / Collapsible Box": "Knock-down return-transit system",
-      "Not Sure (Recommend)": "Custom engineered recommendation"
+      "Not Sure (Recommend)": "Custom engineered recommendation",
     };
 
     // Update Live Brief UI
@@ -750,20 +1096,28 @@ document.addEventListener("DOMContentLoaded", () => {
       if (briefValProduct) {
         briefValProduct.textContent = configState.productCategory;
         briefValProduct.classList.add("spec-value-updated");
-        setTimeout(() => briefValProduct.classList.remove("spec-value-updated"), 600);
+        setTimeout(
+          () => briefValProduct.classList.remove("spec-value-updated"),
+          600,
+        );
       }
       if (briefSubProduct) {
-        briefSubProduct.textContent = productSubtitles[configState.productCategory] || "Custom payload";
+        briefSubProduct.textContent =
+          productSubtitles[configState.productCategory] || "Custom payload";
       }
 
       // 2. Packaging
       if (briefValPackaging) {
         briefValPackaging.textContent = configState.packagingType;
         briefValPackaging.classList.add("spec-value-updated");
-        setTimeout(() => briefValPackaging.classList.remove("spec-value-updated"), 600);
+        setTimeout(
+          () => briefValPackaging.classList.remove("spec-value-updated"),
+          600,
+        );
       }
       if (briefSubPackaging) {
-        briefSubPackaging.textContent = packagingSubtitles[configState.packagingType] || "Timber packaging";
+        briefSubPackaging.textContent =
+          packagingSubtitles[configState.packagingType] || "Timber packaging";
       }
 
       // 3. Dimensions
@@ -779,13 +1133,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 4. Weight
       if (briefValWeight) {
-        const wt = configState.weight ? `${configState.weight} ${configState.weightUnit}` : `— ${configState.weightUnit}`;
+        const wt = configState.weight
+          ? `${configState.weight} ${configState.weightUnit}`
+          : `— ${configState.weightUnit}`;
         briefValWeight.textContent = wt;
       }
 
       // 5. Logistics
       if (briefValLogistics) {
-        const handlingStr = configState.handlingMethods.length > 0 ? configState.handlingMethods.join(" + ") : "Not specified";
+        const handlingStr =
+          configState.handlingMethods.length > 0
+            ? configState.handlingMethods.join(" + ")
+            : "Not specified";
         briefValLogistics.textContent = `${handlingStr} • ${configState.transportMode}`;
       }
       if (briefSubLogistics) {
@@ -794,14 +1153,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 6. Compliance & Reusability
       if (briefValCompliance) {
-        const ispmText = configState.exportReady === "Yes" ? "ISPM-15 Export" : "Standard Freight";
-        const reuseText = configState.reusablePackaging === "Yes" ? "Reusable" : "Single-Trip";
+        const ispmText =
+          configState.exportReady === "Yes"
+            ? "ISPM-15 Export"
+            : "Standard Freight";
+        const reuseText =
+          configState.reusablePackaging === "Yes" ? "Reusable" : "Single-Trip";
         briefValCompliance.textContent = `${ispmText} • ${reuseText}`;
       }
 
       // Update progress bar in brief
       if (briefProgressBar) {
-        const pct = Math.min(100, (configState.currentStep / configState.totalSteps) * 100);
+        const pct = Math.min(
+          100,
+          (configState.currentStep / configState.totalSteps) * 100,
+        );
         briefProgressBar.style.width = `${pct}%`;
       }
 
@@ -824,22 +1190,32 @@ document.addEventListener("DOMContentLoaded", () => {
           if (matrixClone) {
             mobileBriefTarget.innerHTML = matrixClone.innerHTML;
             // Attach jump link listeners in mobile brief
-            mobileBriefTarget.querySelectorAll(".brief-jump-link").forEach((btn) => {
-              btn.addEventListener("click", () => {
-                const targetStep = parseInt(btn.getAttribute("data-jump"), 10);
-                if (targetStep) {
-                  goToStep(targetStep);
-                  if (mobileBriefContent) mobileBriefContent.style.display = "none";
-                  if (mobileToggleBtn) mobileToggleBtn.setAttribute("aria-expanded", "false");
-                }
+            mobileBriefTarget
+              .querySelectorAll(".brief-jump-link")
+              .forEach((btn) => {
+                btn.addEventListener("click", () => {
+                  const targetStep = parseInt(
+                    btn.getAttribute("data-jump"),
+                    10,
+                  );
+                  if (targetStep) {
+                    goToStep(targetStep);
+                    if (mobileBriefContent)
+                      mobileBriefContent.style.display = "none";
+                    if (mobileToggleBtn)
+                      mobileToggleBtn.setAttribute("aria-expanded", "false");
+                  }
+                });
               });
-            });
           }
         }
       }
 
       if (mobileBriefBadge) {
-        mobileBriefBadge.textContent = configState.currentStep <= 6 ? `Step 0${configState.currentStep}` : `Review`;
+        mobileBriefBadge.textContent =
+          configState.currentStep <= 6
+            ? `Step 0${configState.currentStep}`
+            : `Review`;
       }
     };
 
@@ -850,9 +1226,13 @@ document.addEventListener("DOMContentLoaded", () => {
         errBox.style.display = "none";
         errBox.textContent = "";
       }
-      const pane = configuratorRoot.querySelector(`.config-step-pane[data-pane="${stepNum}"]`);
+      const pane = configuratorRoot.querySelector(
+        `.config-step-pane[data-pane="${stepNum}"]`,
+      );
       if (pane) {
-        pane.querySelectorAll(".has-error").forEach((el) => el.classList.remove("has-error"));
+        pane
+          .querySelectorAll(".has-error")
+          .forEach((el) => el.classList.remove("has-error"));
       }
     };
 
@@ -904,19 +1284,35 @@ document.addEventListener("DOMContentLoaded", () => {
         const wt = parseFloat(weightInput.value);
 
         if (isNaN(l) || l <= 0) {
-          showError(3, "Please enter a valid numeric Length (greater than 0).", "dim-length");
+          showError(
+            3,
+            "Please enter a valid numeric Length (greater than 0).",
+            "dim-length",
+          );
           return false;
         }
         if (isNaN(w) || w <= 0) {
-          showError(3, "Please enter a valid numeric Width (greater than 0).", "dim-width");
+          showError(
+            3,
+            "Please enter a valid numeric Width (greater than 0).",
+            "dim-width",
+          );
           return false;
         }
         if (isNaN(h) || h <= 0) {
-          showError(3, "Please enter a valid numeric Height (greater than 0).", "dim-height");
+          showError(
+            3,
+            "Please enter a valid numeric Height (greater than 0).",
+            "dim-height",
+          );
           return false;
         }
         if (isNaN(wt) || wt <= 0) {
-          showError(3, "Please enter an approximate numeric payload weight.", "prod-weight");
+          showError(
+            3,
+            "Please enter an approximate numeric payload weight.",
+            "prod-weight",
+          );
           return false;
         }
 
@@ -929,7 +1325,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (stepNum === 4) {
         if (configState.handlingMethods.length === 0) {
-          showError(4, "Please select at least one handling method (e.g. Forklift).");
+          showError(
+            4,
+            "Please select at least one handling method (e.g. Forklift).",
+          );
           return false;
         }
         return true;
@@ -953,16 +1352,28 @@ document.addEventListener("DOMContentLoaded", () => {
           return false;
         }
         if (!compInput.value.trim()) {
-          showError(6, "Please enter your company or organization name.", "cfg-contact-company");
+          showError(
+            6,
+            "Please enter your company or organization name.",
+            "cfg-contact-company",
+          );
           return false;
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailInput.value.trim())) {
-          showError(6, "Please enter a valid business email address.", "cfg-contact-email");
+          showError(
+            6,
+            "Please enter a valid business email address.",
+            "cfg-contact-email",
+          );
           return false;
         }
         if (!phoneInput.value.trim() || phoneInput.value.trim().length < 6) {
-          showError(6, "Please enter a valid contact phone number.", "cfg-contact-phone");
+          showError(
+            6,
+            "Please enter a valid contact phone number.",
+            "cfg-contact-phone",
+          );
           return false;
         }
 
@@ -1094,7 +1505,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Show Active Pane
       stepPanes.forEach((pane) => {
         const paneId = pane.getAttribute("data-pane");
-        const isTarget = paneId === String(stepNum) || (stepNum === "success" && paneId === "success");
+        const isTarget =
+          paneId === String(stepNum) ||
+          (stepNum === "success" && paneId === "success");
         pane.classList.toggle("is-visible", isTarget);
       });
 
@@ -1130,11 +1543,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Smooth scroll back to configurator if scrolled past or transitioning steps
       const headerHeight = header ? header.offsetHeight : 70;
-      const configuratorTop = configuratorRoot.getBoundingClientRect().top + window.scrollY - (headerHeight + 20);
+      const configuratorTop =
+        configuratorRoot.getBoundingClientRect().top +
+        window.scrollY -
+        (headerHeight + 20);
       if (Math.abs(window.scrollY - configuratorTop) > 60) {
         window.scrollTo({
           top: configuratorTop,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     };
@@ -1233,12 +1649,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Dimension Unit
       if (target.name === "dim_unit") {
         configState.dimUnit = target.value;
-        document.querySelectorAll(".current-dim-unit").forEach((el) => (el.textContent = target.value));
+        document
+          .querySelectorAll(".current-dim-unit")
+          .forEach((el) => (el.textContent = target.value));
       }
       // Weight Unit
       if (target.name === "weight_unit") {
         configState.weightUnit = target.value;
-        document.querySelectorAll(".current-weight-unit").forEach((el) => (el.textContent = target.value));
+        document
+          .querySelectorAll(".current-weight-unit")
+          .forEach((el) => (el.textContent = target.value));
       }
       // Centre of Gravity
       if (target.name === "centre_of_gravity") {
@@ -1247,9 +1667,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Handling Methods (Checkboxes)
       if (target.name === "handling_methods") {
         const checkedMethods = [];
-        form.querySelectorAll('input[name="handling_methods"]:checked').forEach((cb) => {
-          checkedMethods.push(cb.value);
-        });
+        form
+          .querySelectorAll('input[name="handling_methods"]:checked')
+          .forEach((cb) => {
+            checkedMethods.push(cb.value);
+          });
         configState.handlingMethods = checkedMethods;
       }
       // Transportation Mode
@@ -1281,12 +1703,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (target.name === "width") configState.width = target.value;
       if (target.name === "height") configState.height = target.value;
       if (target.name === "weight") configState.weight = target.value;
-      if (target.name === "additional_requirements") configState.additionalRequirements = target.value;
-      if (target.name === "contact_name") configState.contactName = target.value;
-      if (target.name === "contact_company") configState.contactCompany = target.value;
-      if (target.name === "contact_email") configState.contactEmail = target.value;
-      if (target.name === "contact_phone") configState.contactPhone = target.value;
-      if (target.name === "contact_notes") configState.contactNotes = target.value;
+      if (target.name === "additional_requirements")
+        configState.additionalRequirements = target.value;
+      if (target.name === "contact_name")
+        configState.contactName = target.value;
+      if (target.name === "contact_company")
+        configState.contactCompany = target.value;
+      if (target.name === "contact_email")
+        configState.contactEmail = target.value;
+      if (target.name === "contact_phone")
+        configState.contactPhone = target.value;
+      if (target.name === "contact_notes")
+        configState.contactNotes = target.value;
 
       updateLiveBrief();
     });
@@ -1294,8 +1722,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mobile Brief Drawer Accordion Toggle
     if (mobileToggleBtn && mobileBriefContent) {
       mobileToggleBtn.addEventListener("click", () => {
-        const isExpanded = mobileToggleBtn.getAttribute("aria-expanded") === "true";
-        mobileToggleBtn.setAttribute("aria-expanded", !isExpanded ? "true" : "false");
+        const isExpanded =
+          mobileToggleBtn.getAttribute("aria-expanded") === "true";
+        mobileToggleBtn.setAttribute(
+          "aria-expanded",
+          !isExpanded ? "true" : "false",
+        );
         mobileBriefContent.style.display = isExpanded ? "none" : "block";
       });
     }
@@ -1304,4 +1736,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLiveBrief();
   }
 });
-

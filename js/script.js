@@ -359,12 +359,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const whyCaptionIndex = document.getElementById("why-caption-index");
   const whyCaptionText = document.getElementById("why-caption-text");
   const whyVisualCard = document.getElementById("why-visual-card");
+  const whyShowcaseCard = document.getElementById("why-showcase-card");
+  const whyShowcaseSticky = document.querySelector(".why-showcase-sticky");
+  const whyMobileQuery = window.matchMedia("(max-width: 600px)");
 
   if (whyRows.length > 0) {
     let whyActiveIndex = whyRows.findIndex((row) =>
       row.classList.contains("is-active"),
     );
     if (whyActiveIndex === -1) whyActiveIndex = 0;
+    let whyMobileExpandedRow = null;
+
+    // Mobile accordion: relocate the shared showcase card beneath the active row
+    const collapsePanel = () => {
+      if (whyMobileExpandedRow) {
+        whyMobileExpandedRow.classList.remove("why-row-panel-open");
+        whyMobileExpandedRow = null;
+      }
+      if (whyShowcaseCard) whyShowcaseCard.classList.remove("why-panel-inline");
+    };
+
+    const placePanelInline = (row) => {
+      if (!whyShowcaseCard || !row) return;
+      if (whyMobileExpandedRow && whyMobileExpandedRow !== row) {
+        whyMobileExpandedRow.classList.remove("why-row-panel-open");
+      }
+      row.insertAdjacentElement("afterend", whyShowcaseCard);
+      whyShowcaseCard.classList.add("why-panel-inline");
+      row.classList.add("why-row-panel-open");
+      whyMobileExpandedRow = row;
+    };
+
+    const syncMobileLayout = () => {
+      if (whyMobileQuery.matches) {
+        placePanelInline(whyRows[whyActiveIndex]);
+      } else {
+        collapsePanel();
+        if (whyShowcaseSticky && whyShowcaseCard) {
+          whyShowcaseSticky.appendChild(whyShowcaseCard);
+        }
+      }
+    };
 
     const setActiveRow = (index) => {
       whyActiveIndex = (index + whyRows.length) % whyRows.length;
@@ -402,16 +437,35 @@ document.addEventListener("DOMContentLoaded", () => {
       if (whyVisualCard && img) {
         whyVisualCard.style.backgroundImage = `url('${img}')`;
       }
+
+      if (whyMobileQuery.matches) {
+        placePanelInline(targetRow);
+      }
+    };
+
+    // On mobile a tap toggles the accordion open/closed; on desktop it just activates
+    const handleRowActivate = (index) => {
+      const row = whyRows[index];
+      if (whyMobileQuery.matches && whyMobileExpandedRow === row) {
+        collapsePanel();
+        row.classList.remove("is-active");
+        return;
+      }
+      setActiveRow(index);
     };
 
     whyRows.forEach((row, index) => {
-      row.addEventListener("mouseenter", () => setActiveRow(index));
-      row.addEventListener("focus", () => setActiveRow(index));
-      row.addEventListener("click", () => setActiveRow(index));
+      row.addEventListener("mouseenter", () => {
+        if (!whyMobileQuery.matches) setActiveRow(index);
+      });
+      row.addEventListener("focus", () => {
+        if (!whyMobileQuery.matches) setActiveRow(index);
+      });
+      row.addEventListener("click", () => handleRowActivate(index));
       row.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setActiveRow(index);
+          handleRowActivate(index);
         } else if (e.key === "ArrowDown") {
           e.preventDefault();
           const nextIndex = (index + 1) % whyRows.length;
@@ -425,6 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+
+    syncMobileLayout();
+    whyMobileQuery.addEventListener("change", syncMobileLayout);
   }
 
   // --------------------------------------------------------------------------

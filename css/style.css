@@ -668,6 +668,12 @@ h1, h2, h3, h4, h5, h6 {
 .hero-btn-icon-circle svg {
   width: 16px;
   height: 16px;
+  transition: transform var(--transition-smooth);
+}
+
+.btn-hero-primary:hover .hero-btn-icon-circle svg,
+.btn-hero-outline:hover .hero-btn-icon-circle svg {
+  transform: translate(2px, -2px);
 }
 
 .hero-btn-icon-outline {
